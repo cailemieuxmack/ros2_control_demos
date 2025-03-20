@@ -302,7 +302,7 @@ void RobotController::setup_mapped_mem() {
   // atomic_init(&actuation->values[0], 0.0);
   for (int i = 0; i < 5; i++) {
       // std::atomic_init(&state_vote->values[i], 1.0);
-      state_vote->values[i].store(1.0)
+      state_vote->values[i].store(1.0);
   }
   // std::atomic_init(&state_vote->idx, 1);
   state_vote->idx.store(1);
@@ -317,11 +317,11 @@ void RobotController::setup_mapped_mem() {
   tmp_state = static_cast<State_vote*>(malloc(sizeof(State_vote)));
 
   // Do I have to init the tmp_state too?
-  tmp_vote->idx = 0;
-  tmp_vote->values[0] = 1.0;
+  tmp_vote->idx.store(0);
+  tmp_vote->values[0].store(1.0);
 
-  tmp_state->idx = 0;
-  tmp_vote->values[0] = 1.0;
+  tmp_state->idx.store(0);
+  tmp_vote->values[0].store(1.0);
 
   have_actuation = false;
 
