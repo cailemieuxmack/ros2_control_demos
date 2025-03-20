@@ -257,7 +257,7 @@ void RobotController::setup_mapped_mem() {
   lseek (fd0, 0, SEEK_SET);
 
   // map the file into memory
-  state_vote = mmap(NULL, sizeof(State_vote), PROT_WRITE, MAP_SHARED, fd0, 0);
+  state_vote = static_cast<State_vote*>(mmap(NULL, sizeof(State_vote), PROT_WRITE, MAP_SHARED, fd0, 0));
   close(fd0);
   if (state_vote == -1){
       printf("error: %s\n", strerror(errno));
@@ -288,7 +288,7 @@ void RobotController::setup_mapped_mem() {
   lseek (fd1, 0, SEEK_SET);
 
   // map the file into memory
-  data0 = mmap(NULL, sizeof(Vote), PROT_WRITE, MAP_SHARED, fd1, 0);
+  data0 = static_cast<Vote*>(mmap(NULL, sizeof(Vote), PROT_WRITE, MAP_SHARED, fd1, 0));
   close(fd1);
   if (data0 == -1){
       printf("error: %s\n", strerror(errno));
@@ -308,11 +308,11 @@ void RobotController::setup_mapped_mem() {
   myIdx = 0;
 
   // Open the results file after clearing it
-  remove("results.csv");
-  fd2 = open("results.csv", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+  // remove("results.csv");
+  // fd2 = open("results.csv", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
 
-  tmp_vote = malloc(sizeof(Vote));
-  tmp_state = malloc(sizeof(State_vote));
+  tmp_vote = static_cast<Vote*>(malloc(sizeof(Vote)));
+  tmp_state = static_cast<State_vote*>(malloc(sizeof(State_vote)));
 
   // Do I have to init the tmp_state too?
   tmp_vote->idx = 0;
