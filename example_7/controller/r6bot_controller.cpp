@@ -213,6 +213,7 @@ controller_interface::return_type RobotController::update(
 
 
     myIdx = tmp_vote->idx.load();
+    myIdx++;
   } else {
     // did not vote in time...
   }
