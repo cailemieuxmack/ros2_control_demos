@@ -32,6 +32,15 @@
 #include <iostream>
 #include <stdatomic.h>
 #include <stdbool.h>
+// #include <string.h>
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <stdio.h>
+#include <errno.h>
+// #include <semaphore.h>
+// #include "controller.h"
+#include <stdatomic.h>
+#include <stdbool.h>
 
 using config_type = controller_interface::interface_configuration_type;
 
@@ -186,7 +195,7 @@ controller_interface::return_type RobotController::update(
   tmp_state->values[0] = tmp_vote->values[0]; // FIXME -> need to actually pass in the real state
 
   for(int i = 0; i < 5; i++){
-    atomic_store_explicit(&state_vote->values[i], tmp_state->values[i], memory_order_relaxed);
+    atomic_store_explicit(&state_vote->values[i], tmp_state->values[i], std::memory_order_relaxed);
   }
   atomic_store_explicit(&state_vote->idx, tmp_state->idx, memory_order_release);
 
