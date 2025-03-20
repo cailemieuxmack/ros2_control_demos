@@ -192,7 +192,7 @@ controller_interface::return_type RobotController::update(
 
   // DEBUG
   tmp_state->idx = myIdx;
-  tmp_state->values[0] = tmp_vote->values[0]; // FIXME -> need to actually pass in the real state
+  tmp_state->values[0].store(tmp_vote->values[0].load()); // FIXME -> need to actually pass in the real state
 
   for(int i = 0; i < 5; i++){
     std::atomic_store_explicit(&state_vote->values[i], tmp_state->values[i], std::memory_order_relaxed);
@@ -207,12 +207,12 @@ controller_interface::return_type RobotController::update(
   //printf("idx: %d   value: %f\n", tmp_vote->idx, tmp_vote->values[0]);
   //printf("read: %d,   %f\n", tmp_vote->idx, tmp_vote->values[0]);
 
-  if (tmp_vote->idx > myIdx) {
+  if (tmp_vote->idx.load() > myIdx) {
     // We have a new message
-    std::cout << "got: " << tmp_vote->values[0] << std::endl;
+    std::cout << "got: " << tmp_vote->values[0].load() << std::endl;
 
 
-    myIdx = tmp_vote->idx;
+    myIdx = tmp_vote->idx.load();
   } else {
     // did not vote in time...
   }
@@ -259,7 +259,7 @@ void RobotController::setup_mapped_mem() {
   // map the file into memory
   state_vote = static_cast<State_vote*>(mmap(NULL, sizeof(State_vote), PROT_WRITE, MAP_SHARED, fd0, 0));
   close(fd0);
-  if (state_vote == -1){
+  if (state_vote == MAP_FAILED){
       printf("error: %s\n", strerror(errno));
       exit(1);
   }
@@ -290,7 +290,7 @@ void RobotController::setup_mapped_mem() {
   // map the file into memory
   data0 = static_cast<Vote*>(mmap(NULL, sizeof(Vote), PROT_WRITE, MAP_SHARED, fd1, 0));
   close(fd1);
-  if (data0 == -1){
+  if (data0 == MAP_FAILED){
       printf("error: %s\n", strerror(errno));
       exit(1);
   }
@@ -301,9 +301,11 @@ void RobotController::setup_mapped_mem() {
   // atomic_init(&actuation->idx, 0);
   // atomic_init(&actuation->values[0], 0.0);
   for (int i = 0; i < 5; i++) {
-      std::atomic_init(&state_vote->values[i], 1.0);
+      // std::atomic_init(&state_vote->values[i], 1.0);
+      state_vote->values[i].store(1.0)
   }
-  std::atomic_init(&state_vote->idx, 1);
+  // std::atomic_init(&state_vote->idx, 1);
+  state_vote->idx.store(1);
 
   myIdx = 0;
 
