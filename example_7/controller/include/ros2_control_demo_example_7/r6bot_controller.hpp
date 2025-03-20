@@ -52,22 +52,24 @@ typedef struct {
   double values[5]; // x,a,t temp(dx, da)
 } State_vote;
 
-int fd0;
-State_vote* state_vote;
-int fd1;
-Vote* actuation;
-int myIdx;
-Vote *tmp_vote;
-State_vote *tmp_state;
-bool have_actuation;
-Vote* data0;
-
-
+// int fd0;
+// State_vote* state_vote;
+// int fd1;
+// Vote* actuation;
+// int myIdx;
+// Vote *tmp_vote;
+// State_vote *tmp_state;
+// bool have_actuation;
+// Vote* data0;
 
 
 class RobotController : public controller_interface::ControllerInterface
 {
 public:
+
+  //DEBUG
+  void setup_mapped_mem();
+
   RobotController();
 
   controller_interface::InterfaceConfiguration command_interface_configuration() const override;
@@ -89,6 +91,19 @@ public:
     const rclcpp_lifecycle::State & previous_state) override;
 
 protected:
+
+  //DEBUG
+  int fd0;
+  State_vote* state_vote;
+  int fd1;
+  Vote* actuation;
+  int myIdx;
+  Vote *tmp_vote;
+  State_vote *tmp_state;
+  bool have_actuation;
+  Vote* data0;
+
+
   std::vector<std::string> joint_names_;
   std::vector<std::string> command_interface_types_;
   std::vector<std::string> state_interface_types_;

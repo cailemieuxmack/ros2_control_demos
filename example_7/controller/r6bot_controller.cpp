@@ -30,6 +30,8 @@
 // DEBUG
 #include "controller.h"
 #include <iostream>
+#include <stdatomic.h>
+#include <stdbool.h>
 
 using config_type = controller_interface::interface_configuration_type;
 
@@ -236,7 +238,7 @@ controller_interface::CallbackReturn RobotController::on_deactivate(const rclcpp
 }
 
 // DEBUG
-void setup_mapped_mem() {
+void RobotController::setup_mapped_mem() {
 
   // open or create the file with the proper permissions
   fd0 = open("_state", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
