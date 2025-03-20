@@ -39,6 +39,32 @@
 
 namespace ros2_control_demo_example_7
 {
+
+//DEBUG
+
+typedef struct {
+  int idx;
+  double values[1]; // u, (dx, da) <- not yet
+} Vote;
+
+typedef struct {
+  int idx;
+  double values[5]; // x,a,t temp(dx, da)
+} State_vote;
+
+int fd0;
+State_vote* state_vote;
+int fd1;
+Vote* actuation;
+int myIdx;
+Vote *tmp_vote;
+State_vote *tmp_state;
+bool have_actuation;
+Vote* data0;
+
+
+
+
 class RobotController : public controller_interface::ControllerInterface
 {
 public:

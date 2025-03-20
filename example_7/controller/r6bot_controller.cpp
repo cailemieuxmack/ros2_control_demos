@@ -24,11 +24,29 @@
 #include "rclcpp/time.hpp"
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
+#include <chrono>
+#include <rclcpp/rclcpp.hpp>
+
+// DEBUG
+#include "controller.h"
+#include <iostream>
 
 using config_type = controller_interface::interface_configuration_type;
 
 namespace ros2_control_demo_example_7
 {
+
+// typedef struct {
+//   int idx;
+//   double values[1]; // u, (dx, da) <- not yet
+// } Vote;
+
+// typedef struct {
+//   int idx;
+//   double values[5]; // x,a,t temp(dx, da)
+// } State_vote;
+
+
 RobotController::RobotController() : controller_interface::ControllerInterface() {}
 
 controller_interface::CallbackReturn RobotController::on_init()
@@ -42,6 +60,9 @@ controller_interface::CallbackReturn RobotController::on_init()
 
   point_interp_.positions.assign(joint_names_.size(), 0);
   point_interp_.velocities.assign(joint_names_.size(), 0);
+
+  // DEBUG
+  setup_mapped_mem();
 
   return CallbackReturn::SUCCESS;
 }
@@ -158,6 +179,39 @@ controller_interface::return_type RobotController::update(
     new_msg_ = false;
   }
 
+  // DEBUG
+  tmp_state->idx = myIdx;
+  tmp_state->values[0] = tmp_vote->values[0]; // FIXME -> need to actually pass in the real state
+
+  for(int i = 0; i < 5; i++){
+    atomic_store_explicit(&state_vote->values[i], tmp_state->values[i], memory_order_relaxed);
+  }
+  atomic_store_explicit(&state_vote->idx, tmp_state->idx, memory_order_release);
+
+  rclcpp::sleep_for(std::chrono::nanoseconds(100));
+
+  // Get the proposed values
+  tmp_vote->idx = atomic_load_explicit(&data0->idx, memory_order_relaxed);
+  tmp_vote->values[0] = atomic_load_explicit(&data0->values[0], memory_order_relaxed);
+  //printf("idx: %d   value: %f\n", tmp_vote->idx, tmp_vote->values[0]);
+  //printf("read: %d,   %f\n", tmp_vote->idx, tmp_vote->values[0]);
+
+  if (tmp_vote->idx > myIdx) {
+    // We have a new message
+    std::cout << "got: " << tmp_vote->values[0] << std::endl;
+
+
+    myIdx = tmp_vote->idx;
+  } else {
+    // did not vote in time...
+  }
+
+  std::cout << "end" << std::endl;
+
+
+
+  // END DEBUG
+
   if (trajectory_msg_ != nullptr)
   {
     interpolate_trajectory_point(*trajectory_msg_, time - start_time_, point_interp_);
@@ -179,6 +233,85 @@ controller_interface::CallbackReturn RobotController::on_deactivate(const rclcpp
   release_interfaces();
 
   return CallbackReturn::SUCCESS;
+}
+
+// DEBUG
+void setup_mapped_mem() {
+
+  // open or create the file with the proper permissions
+  fd0 = open("_state", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+  // init the size of the file
+  lseek (fd0, sizeof(Vote), SEEK_SET); 
+  write (fd0, "", 1); 
+  lseek (fd0, 0, SEEK_SET);
+
+  // map the file into memory
+  state_vote = mmap(NULL, sizeof(State_vote), PROT_WRITE, MAP_SHARED, fd0, 0);
+  close(fd0);
+  if (state_vote == -1){
+      printf("error: %s\n", strerror(errno));
+      exit(1);
+  }
+  printf("%p\n", state_vote);
+
+  // // open or create the file with the proper permissions
+  // fd1 = open("_actuation", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+  // // init the size of the file
+  // lseek (fd1, sizeof(Vote), SEEK_SET); 
+  // write (fd1, "", 1); 
+  // lseek (fd1, 0, SEEK_SET);
+
+  // // map the file into memory
+  // actuation = mmap(NULL, sizeof(Vote), PROT_WRITE, MAP_SHARED, fd1, 0);
+  // close(fd1);
+  // if (actuation == -1){
+  //     printf("error: %s\n", strerror(errno));
+  //     exit(1);
+  // }
+  // printf("%p\n", actuation);
+
+  fd1 = open("_data0", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+  // init the size of the file
+  lseek (fd1, sizeof(Vote), SEEK_SET); 
+  write (fd1, "", 1); 
+  lseek (fd1, 0, SEEK_SET);
+
+  // map the file into memory
+  data0 = mmap(NULL, sizeof(Vote), PROT_WRITE, MAP_SHARED, fd1, 0);
+  close(fd1);
+  if (data0 == -1){
+      printf("error: %s\n", strerror(errno));
+      exit(1);
+  }
+
+  //printf("vote: %d\n", sizeof(Vote));
+
+  // // init the buffers
+  // atomic_init(&actuation->idx, 0);
+  // atomic_init(&actuation->values[0], 0.0);
+  for (int i = 0; i < 5; i++) {
+      atomic_init(&state_vote->values[i], 1.0);
+  }
+  atomic_init(&state_vote->idx, 1);
+
+  myIdx = 0;
+
+  // Open the results file after clearing it
+  remove("results.csv");
+  fd2 = open("results.csv", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+
+  tmp_vote = malloc(sizeof(Vote));
+  tmp_state = malloc(sizeof(State_vote));
+
+  // Do I have to init the tmp_state too?
+  tmp_vote->idx = 0;
+  tmp_vote->values[0] = 1.0;
+
+  tmp_state->idx = 0;
+  tmp_vote->values[0] = 1.0;
+
+  have_actuation = false;
+
 }
 
 }  // namespace ros2_control_demo_example_7
