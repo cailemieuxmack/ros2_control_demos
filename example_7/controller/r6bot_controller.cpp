@@ -207,7 +207,7 @@ controller_interface::return_type RobotController::update(
   //printf("idx: %d   value: %f\n", tmp_vote->idx, tmp_vote->values[0]);
   //printf("read: %d,   %f\n", tmp_vote->idx, tmp_vote->values[0]);
 
-  if (tmp_vote->idx.load() > myIdx) {
+  if (tmp_vote->idx.load() >= myIdx) {
     // We have a new message
     std::cout << "got: " << tmp_vote->values[0].load() << std::endl;
 
