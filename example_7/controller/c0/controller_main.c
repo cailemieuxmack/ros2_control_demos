@@ -28,14 +28,24 @@
 #define BUFFER_SIZE 1024
 
 typedef struct {
-    int idx;
-    double values[1]; // u, (dx, da) <- not yet
+    atomic_int idx;
+    atomic_double values[1]; // u, (dx, da) <- not yet
 } Vote;
 
 typedef struct {
     int idx;
-    double values[5]; // x,a,t temp(dx, da)
+    double values[1]; // u, (dx, da) <- not yet
+} Vote_NA;
+
+typedef struct {
+    atomic_int idx;
+    atomic_double values[5]; // x,a,t temp(dx, da)
 } State;
+
+typedef struct {
+    int idx;
+    double values[5]; // x,a,t temp(dx, da)
+} State_NA;
 
 typedef struct {
     int idx;
@@ -107,8 +117,8 @@ int main() {
    
     int myIdx = 0;
 
-    Vote *tmp_vote = malloc(sizeof(Vote));
-    State *tmp_state = malloc(sizeof(State));
+    Vote_NA *tmp_vote = malloc(sizeof(Vote_NA));
+    State_NA *tmp_state = malloc(sizeof(State_NA));
     Internal *tmp_internal = malloc(sizeof(Internal));
 
     // tmp_vote->idx = 0;
