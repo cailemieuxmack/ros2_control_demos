@@ -197,13 +197,13 @@ controller_interface::return_type RobotController::update(
   for(int i = 0; i < 5; i++){
     atomic_store_explicit(&state_vote->values[i], tmp_state->values[i], std::memory_order_relaxed);
   }
-  atomic_store_explicit(&state_vote->idx, tmp_state->idx, memory_order_release);
+  atomic_store_explicit(&state_vote->idx, tmp_state->idx, std::memory_order_release);
 
   rclcpp::sleep_for(std::chrono::nanoseconds(100));
 
   // Get the proposed values
-  tmp_vote->idx = atomic_load_explicit(&data0->idx, memory_order_relaxed);
-  tmp_vote->values[0] = atomic_load_explicit(&data0->values[0], memory_order_relaxed);
+  tmp_vote->idx = atomic_load_explicit(&data0->idx, std::memory_order_relaxed);
+  tmp_vote->values[0] = atomic_load_explicit(&data0->values[0], std::memory_order_relaxed);
   //printf("idx: %d   value: %f\n", tmp_vote->idx, tmp_vote->values[0]);
   //printf("read: %d,   %f\n", tmp_vote->idx, tmp_vote->values[0]);
 
