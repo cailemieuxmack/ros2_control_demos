@@ -195,15 +195,15 @@ controller_interface::return_type RobotController::update(
   tmp_state->values[0] = tmp_vote->values[0]; // FIXME -> need to actually pass in the real state
 
   for(int i = 0; i < 5; i++){
-    atomic_store_explicit(&state_vote->values[i], tmp_state->values[i], std::memory_order_relaxed);
+    std::atomic_store_explicit(&state_vote->values[i], tmp_state->values[i], std::memory_order_relaxed);
   }
-  atomic_store_explicit(&state_vote->idx, tmp_state->idx, std::memory_order_release);
+  std::atomic_store_explicit(&state_vote->idx, tmp_state->idx, std::memory_order_release);
 
   rclcpp::sleep_for(std::chrono::nanoseconds(100));
 
   // Get the proposed values
-  tmp_vote->idx = atomic_load_explicit(&data0->idx, std::memory_order_relaxed);
-  tmp_vote->values[0] = atomic_load_explicit(&data0->values[0], std::memory_order_relaxed);
+  tmp_vote->idx = std::atomic_load_explicit(&data0->idx, std::memory_order_relaxed);
+  tmp_vote->values[0] = std::atomic_load_explicit(&data0->values[0], std::memory_order_relaxed);
   //printf("idx: %d   value: %f\n", tmp_vote->idx, tmp_vote->values[0]);
   //printf("read: %d,   %f\n", tmp_vote->idx, tmp_vote->values[0]);
 
@@ -301,9 +301,9 @@ void RobotController::setup_mapped_mem() {
   // atomic_init(&actuation->idx, 0);
   // atomic_init(&actuation->values[0], 0.0);
   for (int i = 0; i < 5; i++) {
-      atomic_init(&state_vote->values[i], 1.0);
+      std::atomic_init(&state_vote->values[i], 1.0);
   }
-  atomic_init(&state_vote->idx, 1);
+  std::atomic_init(&state_vote->idx, 1);
 
   myIdx = 0;
 
