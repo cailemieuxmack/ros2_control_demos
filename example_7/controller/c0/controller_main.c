@@ -28,8 +28,8 @@
 #define BUFFER_SIZE 1024
 
 typedef struct {
-    atomic_int idx;
-    atomic_double values[1]; // u, (dx, da) <- not yet
+    _Atomic int idx;
+    _Atomic double values[1]; // u, (dx, da) <- not yet
 } Vote;
 
 typedef struct {
@@ -38,8 +38,8 @@ typedef struct {
 } Vote_NA;
 
 typedef struct {
-    atomic_int idx;
-    atomic_double values[5]; // x,a,t temp(dx, da)
+    _Atomic int idx;
+    _Atomic double values[5]; // x,a,t temp(dx, da)
 } State;
 
 typedef struct {
