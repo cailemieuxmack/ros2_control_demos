@@ -45,7 +45,7 @@ int init() {}
 
 int step() {
     double msg = in[0];
-    printf("msg: %d\n", msg);
+    printf("msg: %f\n", msg);
     out[0] = msg + 1;
     // const trajectory_msgs::msg::JointTrajectory & traj_msg = in.traj_msg;
     // const rclcpp::Duration & cur_time = in.time - in.start_time;

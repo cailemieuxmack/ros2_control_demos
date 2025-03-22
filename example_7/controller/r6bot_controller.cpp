@@ -210,6 +210,7 @@ controller_interface::return_type RobotController::update(
   if (tmp_vote->idx.load() >= myIdx) {
     // We have a new message
     std::cout << "got: " << tmp_vote->values[0].load() << std::endl;
+    std::cout << sizeof(trajectory_msg_); << std::endl;
 
 
     myIdx = tmp_vote->idx.load();
