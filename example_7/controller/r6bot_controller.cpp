@@ -219,7 +219,7 @@ controller_interface::return_type RobotController::update(
     // did not vote in time...
   }
 
-  std::cout << "end" << std::endl;
+  // std::cout << "end" << std::endl;
 
 
 
