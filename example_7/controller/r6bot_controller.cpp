@@ -191,14 +191,18 @@ controller_interface::return_type RobotController::update(
   }
 
   // DEBUG
+  // Pass in the index and state
   tmp_state->idx = myIdx;
   tmp_state->values[0].store(tmp_vote->values[0].load()); // FIXME -> need to actually pass in the real state
 
+  // Actually store the state in the maped memory
   for(int i = 0; i < 5; i++){
     std::atomic_store_explicit(&state_vote->values[i], tmp_state->values[i], std::memory_order_relaxed);
   }
+  // Store the index last
   std::atomic_store_explicit(&state_vote->idx, tmp_state->idx, std::memory_order_release);
 
+  // Sleep so that the controller can run
   rclcpp::sleep_for(std::chrono::nanoseconds(100));
 
   // Get the proposed values
@@ -212,7 +216,7 @@ controller_interface::return_type RobotController::update(
     std::cout << "got: " << tmp_vote->values[0].load() << std::endl;
     // std::cout << sizeof(trajectory_msg_) << std::endl;
 
-
+    // update index index
     myIdx = tmp_vote->idx.load();
     myIdx++;
   } else {
