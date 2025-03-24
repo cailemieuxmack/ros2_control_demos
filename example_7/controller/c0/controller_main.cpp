@@ -102,7 +102,9 @@ int main() {
     State_NA* tmp_state = static_cast<State_NA*>(malloc(sizeof(State_NA)));
     Internal* tmp_internal = static_cast<Internal*>(malloc(sizeof(Internal)));
 
+    std::cout << "calling init" << std::endl;
     init();
+    std::cout << "returned from init" << std::endl;
 
     while (true) {
         tmp_state->idx = state->idx.load(std::memory_order_acquire);
