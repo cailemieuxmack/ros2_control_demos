@@ -1,3 +1,6 @@
+#ifndef CONTROLLER_H
+#define CONTROLLER_H
+
 // ROS2 Stuff
 
 // #include "ros2_control_demo_example_7/r6bot_controller.hpp"
@@ -34,3 +37,6 @@ extern double out[];
 
 int init();
 int step();
+
+
+#endif
