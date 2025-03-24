@@ -107,6 +107,9 @@ int main() {
     while (true) {
         tmp_state->idx = state->idx.load(std::memory_order_acquire);
 
+        std::cout << "Idx recieved: " << tmp_state->idx << std::endl;
+
+
         if (tmp_state->idx > myIdx) {
             for (int i = 0; i < 5; i++) {
                 tmp_state->values[i] = state->values[i].load(std::memory_order_relaxed);
