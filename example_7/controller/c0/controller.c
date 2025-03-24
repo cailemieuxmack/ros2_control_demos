@@ -40,7 +40,9 @@ double out[1];
 //   }
 
 
-int init() {}
+int init() {
+    printf("initializing controller...");
+}
 
 
 int step() {

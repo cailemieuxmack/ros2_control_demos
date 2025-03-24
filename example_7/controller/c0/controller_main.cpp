@@ -50,7 +50,7 @@ int main() {
     // map the file into memory
     State* state = static_cast<State*>(mmap(NULL, sizeof(State), PROT_WRITE, MAP_SHARED, fd0, 0));
     close(fd0);
-    if (state == reinterpret_cast<State*>(-1)) {
+    if (state == MAP_FAILED) {
         std::cerr << "error: " << strerror(errno) << std::endl;
         exit(1);
     }
@@ -82,7 +82,7 @@ int main() {
     // map the file into memory
     Vote* data = static_cast<Vote*>(mmap(NULL, sizeof(Vote), PROT_WRITE, MAP_SHARED, fd2, 0));
     close(fd2);
-    if (data == reinterpret_cast<Vote*>(-1)) {
+    if (data == MAP_FAILED) {
         std::cerr << "error: " << strerror(errno) << std::endl;
         exit(1);
     }
@@ -107,7 +107,7 @@ int main() {
     while (true) {
         tmp_state->idx = state->idx.load(std::memory_order_acquire);
 
-        std::cout << "Idx recieved: " << tmp_state->idx << std::endl;
+        //std::cout << "Idx recieved: " << tmp_state->idx << std::endl;
 
 
         if (tmp_state->idx > myIdx) {
