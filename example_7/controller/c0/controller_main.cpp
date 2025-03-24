@@ -7,7 +7,7 @@
 #include <string.h>
 #include <atomic>
 #include <cstdint>
-#include "../controller.h"
+#include "controller.h"
 
 #define BUFFER_SIZE 1024
 
