@@ -96,20 +96,20 @@ int main() {
         data->values[i].store(0.0, std::memory_order_relaxed);
     }
 
-    int myIdx = 0;
+    int myIdx = -1;
 
     Vote_NA* tmp_vote = static_cast<Vote_NA*>(malloc(sizeof(Vote_NA)));
     State_NA* tmp_state = static_cast<State_NA*>(malloc(sizeof(State_NA)));
     Internal* tmp_internal = static_cast<Internal*>(malloc(sizeof(Internal)));
 
-    std::cout << "calling init" << std::endl;
+    //std::cout << "calling init" << std::endl;
     init();
-    std::cout << "returned from init" << std::endl;
+    //std::cout << "returned from init" << std::endl;
 
     while (true) {
         tmp_state->idx = state->idx.load(std::memory_order_acquire);
 
-        //std::cout << "Idx recieved: " << tmp_state->idx << std::endl;
+        std::cout << "Idx recieved: " << tmp_state->idx << std::endl;
 
 
         if (tmp_state->idx > myIdx) {

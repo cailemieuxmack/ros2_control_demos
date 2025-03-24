@@ -41,7 +41,7 @@ double out[1];
 
 
 int init() {
-    printf("initializing controller...");
+    printf("initializing controller...\n");
 }
 
 
