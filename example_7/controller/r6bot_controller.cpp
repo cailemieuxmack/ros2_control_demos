@@ -317,7 +317,7 @@ void RobotController::setup_mapped_mem() {
   // std::atomic_init(&state_vote->idx, 1);
   state_vote->idx.store(1);
 
-  myIdx = 0;
+  myIdx = 1;
 
   // Open the results file after clearing it
   // remove("results.csv");
@@ -327,7 +327,7 @@ void RobotController::setup_mapped_mem() {
   tmp_state = static_cast<State_vote*>(malloc(sizeof(State_vote)));
 
   // Do I have to init the tmp_state too?
-  tmp_vote->idx.store(0);
+  tmp_vote->idx.store(1);
   tmp_vote->values[0].store(1.0);
 
   tmp_state->idx.store(0);
