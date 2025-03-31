@@ -192,7 +192,7 @@ controller_interface::return_type RobotController::update(
 
   // DEBUG
   // Pass in the index and state
-  tmp_state->idx = myIdx; //.store(5);//myIdx;
+  tmp_state->idx = 5; //.store(5);//myIdx;
   tmp_state->values[0] = tmp_vote->values[0]; //.store(tmp_vote->values[0].load()); // FIXME -> need to actually pass in the real state *******
 
   // Actually store the state in the maped memory
