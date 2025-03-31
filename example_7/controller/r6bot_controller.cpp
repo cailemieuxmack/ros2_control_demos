@@ -194,7 +194,7 @@ controller_interface::return_type RobotController::update(
   // Pass in the index and state
   tmp_state->idx = myIdx; //.store(5);//myIdx;
   //tmp_state->values[0] = tmp_vote->values[0]; // FIXME -> need to actually pass in the real state *******
-  serialize_joint_trajectory(trajecory_msg_, tmp_state->value);
+  serialize_joint_trajectory(trajectory_msg_, tmp_state->value);
 
   // Actually store the state in the maped memory
   for(int i = 0; i < 5; i++){
@@ -312,10 +312,10 @@ void RobotController::setup_mapped_mem() {
   // // init the buffers
   // atomic_init(&actuation->idx, 0);
   // atomic_init(&actuation->values[0], 0.0);
-  for (int i = 0; i < 5; i++) {
-      // std::atomic_init(&state_vote->values[i], 1.0);
-      state_vote->values[i] = 1.0; //.store(1.0);
-  }
+  // for (int i = 0; i < 5; i++) {
+  //     // std::atomic_init(&state_vote->values[i], 1.0);
+  //     state_vote->values[i] = 1.0; //.store(1.0);
+  // }
   // std::atomic_init(&state_vote->idx, 1);
   state_vote->idx = 1; //.store(1);
 
@@ -339,17 +339,17 @@ void RobotController::setup_mapped_mem() {
 
 }
 
-void RopboptController::serialize_joint_trajectory(const trajectory_msgs::msg::JointTrajectory& src, MappedJointTrajectory& dest) {
+void RobotController::serialize_joint_trajectory(const std::shared_ptr<trajectory_msgs::msg::JointTrajectory>& src, MappedJointTrajectory& dest) {
   // Serialize joint names
-  dest.joint_names_length = src.joint_names.size();
-  for (size_t i = 0; i < src.joint_names.size(); ++i) {
-      strncpy(dest.joint_names[i], src.joint_names[i].c_str(), sizeof(dest.joint_names[i]));
+  dest.joint_names_length = src->joint_names.size();
+  for (size_t i = 0; i < src->joint_names.size(); ++i) {
+      strncpy(dest.joint_names[i], src->joint_names[i].c_str(), sizeof(dest.joint_names[i]));
   }
 
   // Serialize points
-  dest.points_length = src.points.size();
-  for (size_t i = 0; i < src.points.size(); ++i) {
-      const auto& point = src.points[i];
+  dest.points_length = src->points.size();
+  for (size_t i = 0; i < src->points.size(); ++i) {
+      const auto& point = src->points[i];
       auto& mapped_point = dest.points[i];
 
       mapped_point.positions_length = point.positions.size();
@@ -372,8 +372,8 @@ void RopboptController::serialize_joint_trajectory(const trajectory_msgs::msg::J
           mapped_point.effort[j] = point.effort[j];
       }
 
-      mapped_point.time_from_start_sec = point.time_from_start.sec;
-      mapped_point.time_from_start_nsec = point.time_from_start.nsec;
+      // mapped_point.time_from_start_sec = point.time_from_start.sec;
+      // mapped_point.time_from_start_nsec = point.time_from_start.nsec;
   }
 }
 

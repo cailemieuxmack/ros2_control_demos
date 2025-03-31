@@ -55,8 +55,8 @@ struct MappedJointTrajectoryPoint {
     size_t effort_length;
     double effort[100]; // Assuming a maximum of 100 effort values
 
-    uint64_t time_from_start_sec; // seconds part of the duration
-    uint64_t time_from_start_nsec; // nanoseconds part of the duration
+    // uint64_t time_from_start_sec; // seconds part of the duration
+    // uint64_t time_from_start_nsec; // nanoseconds part of the duration
 };
 
 struct MappedJointTrajectory {
@@ -94,6 +94,8 @@ public:
 
   //DEBUG
   void setup_mapped_mem();
+
+  void serialize_joint_trajectory(const std::shared_ptr<trajectory_msgs::msg::JointTrajectory>& src, MappedJointTrajectory& dest);
 
   RobotController();
 
