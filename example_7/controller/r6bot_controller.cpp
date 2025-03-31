@@ -193,23 +193,22 @@ controller_interface::return_type RobotController::update(
   // DEBUG
   // Pass in the index and state
   tmp_state->idx = myIdx; //.store(5);//myIdx;
-  tmp_state->values[0] = tmp_vote->values[0]; //.store(tmp_vote->values[0].load()); // FIXME -> need to actually pass in the real state *******
+  //tmp_state->values[0] = tmp_vote->values[0]; // FIXME -> need to actually pass in the real state *******
+  serialize_joint_trajectory(trajecory_msg_, tmp_state->value);
 
   // Actually store the state in the maped memory
   for(int i = 0; i < 5; i++){
-    state_vote->values[i] = tmp_state->values[i];
-    //std::atomic_store_explicit(&state_vote->values[i], tmp_state->values[i], std::memory_order_relaxed);
+    state_vote->value = tmp_state->value;
   }
   // Store the index last
-  //std::atomic_store_explicit(&state_vote->idx, tmp_state->idx, std::memory_order_release);
   state_vote->idx = tmp_state->idx;
 
   // Sleep so that the controller can run
   rclcpp::sleep_for(std::chrono::nanoseconds(100));
 
   // Get the proposed values
-  tmp_vote->idx = data0->idx; //std::atomic_load_explicit(&data0->idx, std::memory_order_relaxed);
-  tmp_vote->values[0] = data0->values[0]; //std::atomic_load_explicit(&data0->values[0], std::memory_order_relaxed);
+  tmp_vote->idx = data0->idx; 
+  tmp_vote->values[0] = data0->values[0];
   //printf("idx: %d   value: %f\n", tmp_vote->idx, tmp_vote->values[0]);
   //printf("read: %d,   %f\n", tmp_vote->idx, tmp_vote->values[0]);
 
@@ -338,6 +337,44 @@ void RobotController::setup_mapped_mem() {
 
   have_actuation = false;
 
+}
+
+void RopboptController::serialize_joint_trajectory(const trajectory_msgs::msg::JointTrajectory& src, MappedJointTrajectory& dest) {
+  // Serialize joint names
+  dest.joint_names_length = src.joint_names.size();
+  for (size_t i = 0; i < src.joint_names.size(); ++i) {
+      strncpy(dest.joint_names[i], src.joint_names[i].c_str(), sizeof(dest.joint_names[i]));
+  }
+
+  // Serialize points
+  dest.points_length = src.points.size();
+  for (size_t i = 0; i < src.points.size(); ++i) {
+      const auto& point = src.points[i];
+      auto& mapped_point = dest.points[i];
+
+      mapped_point.positions_length = point.positions.size();
+      for (size_t j = 0; j < point.positions.size(); ++j) {
+          mapped_point.positions[j] = point.positions[j];
+      }
+
+      mapped_point.velocities_length = point.velocities.size();
+      for (size_t j = 0; j < point.velocities.size(); ++j) {
+          mapped_point.velocities[j] = point.velocities[j];
+      }
+
+      mapped_point.accelerations_length = point.accelerations.size();
+      for (size_t j = 0; j < point.accelerations.size(); ++j) {
+          mapped_point.accelerations[j] = point.accelerations[j];
+      }
+
+      mapped_point.effort_length = point.effort.size();
+      for (size_t j = 0; j < point.effort.size(); ++j) {
+          mapped_point.effort[j] = point.effort[j];
+      }
+
+      mapped_point.time_from_start_sec = point.time_from_start.sec;
+      mapped_point.time_from_start_nsec = point.time_from_start.nsec;
+  }
 }
 
 }  // namespace ros2_control_demo_example_7

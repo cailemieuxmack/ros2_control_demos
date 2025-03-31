@@ -42,6 +42,31 @@ namespace ros2_control_demo_example_7
 
 //DEBUG
 
+struct MappedJointTrajectoryPoint {
+    size_t positions_length;
+    double positions[100]; // Assuming a maximum of 100 positions
+
+    size_t velocities_length;
+    double velocities[100]; // Assuming a maximum of 100 velocities
+
+    size_t accelerations_length;
+    double accelerations[100]; // Assuming a maximum of 100 accelerations
+
+    size_t effort_length;
+    double effort[100]; // Assuming a maximum of 100 effort values
+
+    uint64_t time_from_start_sec; // seconds part of the duration
+    uint64_t time_from_start_nsec; // nanoseconds part of the duration
+};
+
+struct MappedJointTrajectory {
+    size_t joint_names_length;
+    char joint_names[10][256]; // Assuming a maximum of 10 joint names, each with a maximum length of 256
+
+    size_t points_length;
+    MappedJointTrajectoryPoint points[100]; // Assuming a maximum of 100 points
+};
+
 typedef struct {
   int idx;
   double values[1]; // u, (dx, da) <- not yet
@@ -49,7 +74,7 @@ typedef struct {
 
 typedef struct {
   int idx;
-  double values[5]; // x,a,t temp(dx, da)
+  MappedJointTrajectory value; // x,a,t temp(dx, da)
 } State_vote;
 
 // int fd0;

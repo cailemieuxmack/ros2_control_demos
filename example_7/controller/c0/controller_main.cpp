@@ -14,6 +14,33 @@ extern "C" {
 
 #define BUFFER_SIZE 1024
 
+
+struct MappedJointTrajectoryPoint {
+    size_t positions_length;
+    double positions[100]; // Assuming a maximum of 100 positions
+
+    size_t velocities_length;
+    double velocities[100]; // Assuming a maximum of 100 velocities
+
+    size_t accelerations_length;
+    double accelerations[100]; // Assuming a maximum of 100 accelerations
+
+    size_t effort_length;
+    double effort[100]; // Assuming a maximum of 100 effort values
+
+    uint64_t time_from_start_sec; // seconds part of the duration
+    uint64_t time_from_start_nsec; // nanoseconds part of the duration
+};
+
+struct MappedJointTrajectory {
+    size_t joint_names_length;
+    char joint_names[10][256]; // Assuming a maximum of 10 joint names, each with a maximum length of 256
+
+    size_t points_length;
+    MappedJointTrajectoryPoint points[100]; // Assuming a maximum of 100 points
+};
+
+
 struct Vote {
     int idx;
     double values[1]; // u, (dx, da) <- not yet
@@ -26,7 +53,7 @@ struct Vote {
 
 struct State {
     int idx;
-    double values[5]; // x,a,t temp(dx, da)
+    MappedJointTrajectory value; // x,a,t temp(dx, da)
 };
 
 // struct State_NA {
@@ -113,19 +140,23 @@ int main() {
 
 
         if (tmp_state->idx > myIdx) {
-            for (int i = 0; i < 5; i++) {
-                tmp_state->values[i] = state->values[i]; //.load(std::memory_order_relaxed);
-            }
-            std::cout << "in: " << tmp_state->values[0] << "," << tmp_state->values[1] << "," << tmp_state->values[2] << "," << tmp_state->values[3] << "," << tmp_state->values[4] << std::endl;
-            in[0] = tmp_state->values[0];
-            in[1] = tmp_state->values[1];
-            in[2] = tmp_state->values[2];
-            in[3] = tmp_state->values[3];
-            in[4] = tmp_state->values[4];
+            // for (int i = 0; i < 5; i++) {
+            //     tmp_state->values[i] = state->values[i]; //.load(std::memory_order_relaxed);
+            // }
+            tmp_state->value = state->value;
 
-            step();
+            //std::cout << "in: " << tmp_state->values[0] << "," << tmp_state->values[1] << "," << tmp_state->values[2] << "," << tmp_state->values[3] << "," << tmp_state->values[4] << std::endl;
+            // in[0] = tmp_state->values[0];
+            // in[1] = tmp_state->values[1];
+            // in[2] = tmp_state->values[2];
+            // in[3] = tmp_state->values[3];
+            // in[4] = tmp_state->values[4];
 
-            tmp_vote->values[0] = out[0];
+            // step();
+
+            std::cout << "joint 0 name: " << tmp_state->value.joint_names[0] << std::endl;
+
+            tmp_vote->values[0] = myIdx; //FIXME out[0];
             std::cout << "out: " << tmp_vote->values[0] << std::endl;
             myIdx = tmp_state->idx;
             tmp_vote->idx = myIdx;
