@@ -98,8 +98,8 @@ int main() {
 
     int myIdx = -1;
 
-    Vote* tmp_vote = static_cast<Vote_NA*>(malloc(sizeof(Vote_NA)));
-    State* tmp_state = static_cast<State_NA*>(malloc(sizeof(State_NA)));
+    Vote* tmp_vote = static_cast<Vote*>(malloc(sizeof(Vote)));
+    State* tmp_state = static_cast<State*>(malloc(sizeof(State)));
     Internal* tmp_internal = static_cast<Internal*>(malloc(sizeof(Internal)));
 
     //std::cout << "calling init" << std::endl;
