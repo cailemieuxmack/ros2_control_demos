@@ -26,7 +26,7 @@ struct Vote {
 
 struct State {
     int idx;
-    std::atomic<double> values[5]; // x,a,t temp(dx, da)
+    double values[5]; // x,a,t temp(dx, da)
 };
 
 // struct State_NA {
