@@ -43,13 +43,13 @@ namespace ros2_control_demo_example_7
 //DEBUG
 
 typedef struct {
-  std::atomic<int> idx;
-  std::atomic<double> values[1]; // u, (dx, da) <- not yet
+  int idx;
+  double values[1]; // u, (dx, da) <- not yet
 } Vote;
 
 typedef struct {
-  std::atomic<int> idx;
-  std::atomic<double> values[5]; // x,a,t temp(dx, da)
+  int idx;
+  double values[5]; // x,a,t temp(dx, da)
 } State_vote;
 
 // int fd0;

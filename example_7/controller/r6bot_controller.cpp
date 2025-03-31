@@ -192,34 +192,37 @@ controller_interface::return_type RobotController::update(
 
   // DEBUG
   // Pass in the index and state
-  tmp_state->idx.store(5);//myIdx;
-  tmp_state->values[0].store(tmp_vote->values[0].load()); // FIXME -> need to actually pass in the real state
+  tmp_state->idx = myIdx; //.store(5);//myIdx;
+  tmp_state->values[0] = tmp_vote->values[0]; //.store(tmp_vote->values[0].load()); // FIXME -> need to actually pass in the real state *******
 
   // Actually store the state in the maped memory
   for(int i = 0; i < 5; i++){
-    std::atomic_store_explicit(&state_vote->values[i], tmp_state->values[i], std::memory_order_relaxed);
+    state_vote->values[i] = tmp_state->values[i];
+    //std::atomic_store_explicit(&state_vote->values[i], tmp_state->values[i], std::memory_order_relaxed);
   }
   // Store the index last
-  std::atomic_store_explicit(&state_vote->idx, tmp_state->idx, std::memory_order_release);
+  //std::atomic_store_explicit(&state_vote->idx, tmp_state->idx, std::memory_order_release);
+  state_vote->idx = tmp_state->idx;
 
   // Sleep so that the controller can run
   rclcpp::sleep_for(std::chrono::nanoseconds(100));
 
   // Get the proposed values
-  tmp_vote->idx = std::atomic_load_explicit(&data0->idx, std::memory_order_relaxed);
-  tmp_vote->values[0] = std::atomic_load_explicit(&data0->values[0], std::memory_order_relaxed);
+  tmp_vote->idx = data0->idx; //std::atomic_load_explicit(&data0->idx, std::memory_order_relaxed);
+  tmp_vote->values[0] = data0->values[0]; //std::atomic_load_explicit(&data0->values[0], std::memory_order_relaxed);
   //printf("idx: %d   value: %f\n", tmp_vote->idx, tmp_vote->values[0]);
   //printf("read: %d,   %f\n", tmp_vote->idx, tmp_vote->values[0]);
 
   std::cout << "idx recieved: " << tmp_vote->idx << std::endl;
 
-  if (tmp_vote->idx.load() >= myIdx) {
+  //if (tmp_vote->idx.load() >= myIdx) {
+  if (tmp_vote->idx >= myIdx) {
     // We have a new message
-    std::cout << "got: " << tmp_vote->values[0].load() << std::endl;
+    std::cout << "got: " << tmp_vote->values[0] << std::endl;
     // std::cout << sizeof(trajectory_msg_) << std::endl;
 
     // update index index
-    myIdx = tmp_vote->idx.load();
+    myIdx = tmp_vote->idx; //.load();
     myIdx++;
   } else {
     // did not vote in time...
@@ -312,10 +315,10 @@ void RobotController::setup_mapped_mem() {
   // atomic_init(&actuation->values[0], 0.0);
   for (int i = 0; i < 5; i++) {
       // std::atomic_init(&state_vote->values[i], 1.0);
-      state_vote->values[i].store(1.0);
+      state_vote->values[i] = 1.0; //.store(1.0);
   }
   // std::atomic_init(&state_vote->idx, 1);
-  state_vote->idx.store(1);
+  state_vote->idx = 1; //.store(1);
 
   myIdx = 0;
 
@@ -327,11 +330,11 @@ void RobotController::setup_mapped_mem() {
   tmp_state = static_cast<State_vote*>(malloc(sizeof(State_vote)));
 
   // Do I have to init the tmp_state too?
-  tmp_vote->idx.store(0);
-  tmp_vote->values[0].store(1.0);
+  tmp_vote->idx = 0; //.store(0);
+  tmp_vote->values[0] = 1.0; //.store(1.0);
 
-  tmp_state->idx.store(0);
-  tmp_vote->values[0].store(1.0);
+  tmp_state->idx = 0; //.store(0);
+  tmp_vote->values[0] = 1.0; //.store(1.0);
 
   have_actuation = false;
 

@@ -15,24 +15,24 @@ extern "C" {
 #define BUFFER_SIZE 1024
 
 struct Vote {
-    std::atomic<int> idx;
-    std::atomic<double> values[1]; // u, (dx, da) <- not yet
-};
-
-struct Vote_NA {
     int idx;
     double values[1]; // u, (dx, da) <- not yet
 };
 
+// struct Vote_NA {
+//     int idx;
+//     double values[1]; // u, (dx, da) <- not yet
+// };
+
 struct State {
-    std::atomic<int> idx;
+    int idx;
     std::atomic<double> values[5]; // x,a,t temp(dx, da)
 };
 
-struct State_NA {
-    int idx;
-    double values[5]; // x,a,t temp(dx, da)
-};
+// struct State_NA {
+//     int idx;
+//     double values[5]; // x,a,t temp(dx, da)
+// };
 
 struct Internal {
     int idx;
@@ -91,15 +91,15 @@ int main() {
     std::cout << "vote: " << sizeof(Vote) << std::endl;
 
     // FIXME maybe init internal here
-    data->idx.store(0, std::memory_order_relaxed);
+    data->idx = 0; //.store(0, std::memory_order_relaxed);
     for (int i = 0; i < 1; i++) { // size of Vote.values
-        data->values[i].store(0.0, std::memory_order_relaxed);
+        data->values[i] = 0.0; //.store(0.0, std::memory_order_relaxed);
     }
 
     int myIdx = -1;
 
-    Vote_NA* tmp_vote = static_cast<Vote_NA*>(malloc(sizeof(Vote_NA)));
-    State_NA* tmp_state = static_cast<State_NA*>(malloc(sizeof(State_NA)));
+    Vote* tmp_vote = static_cast<Vote_NA*>(malloc(sizeof(Vote_NA)));
+    State* tmp_state = static_cast<State_NA*>(malloc(sizeof(State_NA)));
     Internal* tmp_internal = static_cast<Internal*>(malloc(sizeof(Internal)));
 
     //std::cout << "calling init" << std::endl;
@@ -107,14 +107,14 @@ int main() {
     //std::cout << "returned from init" << std::endl;
 
     while (true) {
-        tmp_state->idx = state->idx.load(std::memory_order_acquire);
+        tmp_state->idx = state->idx; //.load(std::memory_order_acquire);
 
         std::cout << "Idx recieved: " << tmp_state->idx << std::endl;
 
 
         if (tmp_state->idx > myIdx) {
             for (int i = 0; i < 5; i++) {
-                tmp_state->values[i] = state->values[i].load(std::memory_order_relaxed);
+                tmp_state->values[i] = state->values[i]; //.load(std::memory_order_relaxed);
             }
             std::cout << "in: " << tmp_state->values[0] << "," << tmp_state->values[1] << "," << tmp_state->values[2] << "," << tmp_state->values[3] << "," << tmp_state->values[4] << std::endl;
             in[0] = tmp_state->values[0];
@@ -129,8 +129,8 @@ int main() {
             std::cout << "out: " << tmp_vote->values[0] << std::endl;
             myIdx = tmp_state->idx;
             tmp_vote->idx = myIdx;
-            data->values[0].store(tmp_vote->values[0], std::memory_order_relaxed);
-            data->idx.store(tmp_vote->idx, std::memory_order_release);
+            data->values[0] = tmp_vote->values[0]; //.store(tmp_vote->values[0], std::memory_order_relaxed);
+            data->idx = tmp_vote->idx; //.store(tmp_vote->idx, std::memory_order_release);
         }
     }
 
