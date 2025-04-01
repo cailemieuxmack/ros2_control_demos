@@ -190,14 +190,18 @@ controller_interface::return_type RobotController::update(
     new_msg_ = false;
   }
 
+  std::cout << "Before traj_msg check " << std::endl;
   if (trajectory_msg_ != nullptr)
   {
+    std::cout << "traj_msg exists " << std::endl;
 
     // DEBUG
     // Pass in the index and state
     tmp_state->idx = myIdx; //.store(5);//myIdx;
     //tmp_state->values[0] = tmp_vote->values[0]; // FIXME -> need to actually pass in the real state *******
     serialize_joint_trajectory(trajectory_msg_, tmp_state->value);
+
+    std::cout << "Serialized" << std::endl;
 
     // Actually store the state in the maped memory
     for(int i = 0; i < 5; i++){
