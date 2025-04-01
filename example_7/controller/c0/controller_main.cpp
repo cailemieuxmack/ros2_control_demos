@@ -136,7 +136,7 @@ int main() {
     while (true) {
         tmp_state->idx = state->idx; //.load(std::memory_order_acquire);
 
-        std::cout << "Idx recieved: " << tmp_state->idx << std::endl;
+        //std::cout << "Idx recieved: " << tmp_state->idx << std::endl;
 
 
         if (tmp_state->idx > myIdx) {
@@ -153,6 +153,8 @@ int main() {
             // in[4] = tmp_state->values[4];
 
             // step();
+            std::cout << "Idx recieved: " << tmp_state->idx << std::endl;
+
 
             std::cout << "joint 0 name: " << tmp_state->value.joint_names[0] << std::endl;
 
