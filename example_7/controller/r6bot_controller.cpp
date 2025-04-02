@@ -195,47 +195,47 @@ controller_interface::return_type RobotController::update(
   {
     std::cout << "traj_msg exists " << std::endl;
 
-    // DEBUG
-    // Pass in the index and state
-    tmp_state->idx = myIdx; //.store(5);//myIdx;
-    //tmp_state->values[0] = tmp_vote->values[0]; // FIXME -> need to actually pass in the real state *******
-    serialize_joint_trajectory(trajectory_msg_, tmp_state->value);
+    // // DEBUG
+    // // Pass in the index and state
+    // tmp_state->idx = myIdx; //.store(5);//myIdx;
+    // //tmp_state->values[0] = tmp_vote->values[0]; // FIXME -> need to actually pass in the real state *******
+    // serialize_joint_trajectory(trajectory_msg_, tmp_state->value);
 
-    std::cout << "Serialized" << std::endl;
+    // std::cout << "Serialized" << std::endl;
 
-    // Actually store the state in the maped memory
-    for(int i = 0; i < 5; i++){
-      state_vote->value = tmp_state->value;
-    }
-    // Store the index last
-    state_vote->idx = tmp_state->idx;
+    // // Actually store the state in the maped memory
+    // for(int i = 0; i < 5; i++){
+    //   state_vote->value = tmp_state->value;
+    // }
+    // // Store the index last
+    // state_vote->idx = tmp_state->idx;
 
-    // Sleep so that the controller can run
-    rclcpp::sleep_for(std::chrono::nanoseconds(100));
+    // // Sleep so that the controller can run
+    // rclcpp::sleep_for(std::chrono::nanoseconds(100));
 
-    // Get the proposed values
-    tmp_vote->idx = data0->idx; 
-    tmp_vote->values[0] = data0->values[0];
-    //printf("idx: %d   value: %f\n", tmp_vote->idx, tmp_vote->values[0]);
-    //printf("read: %d,   %f\n", tmp_vote->idx, tmp_vote->values[0]);
+    // // Get the proposed values
+    // tmp_vote->idx = data0->idx; 
+    // tmp_vote->values[0] = data0->values[0];
+    // //printf("idx: %d   value: %f\n", tmp_vote->idx, tmp_vote->values[0]);
+    // //printf("read: %d,   %f\n", tmp_vote->idx, tmp_vote->values[0]);
 
-    std::cout << "idx recieved: " << tmp_vote->idx << std::endl;
+    // std::cout << "idx recieved: " << tmp_vote->idx << std::endl;
 
-    //if (tmp_vote->idx.load() >= myIdx) {
-    if (tmp_vote->idx >= myIdx) {
-      // We have a new message
-      std::cout << "got: " << tmp_vote->values[0] << std::endl;
-      // std::cout << sizeof(trajectory_msg_) << std::endl;
+    // //if (tmp_vote->idx.load() >= myIdx) {
+    // if (tmp_vote->idx >= myIdx) {
+    //   // We have a new message
+    //   std::cout << "got: " << tmp_vote->values[0] << std::endl;
+    //   // std::cout << sizeof(trajectory_msg_) << std::endl;
 
-      // update index index
-      myIdx = tmp_vote->idx; //.load();
-      myIdx++;
-    } else {
-      // did not vote in time...
-    }
+    //   // update index index
+    //   myIdx = tmp_vote->idx; //.load();
+    //   myIdx++;
+    // } else {
+    //   // did not vote in time...
+    // }
 
-    // std::cout << "end" << std::endl;
-    // END DEBUG
+    // // std::cout << "end" << std::endl;
+    // // END DEBUG
 
 
     interpolate_trajectory_point(*trajectory_msg_, time - start_time_, point_interp_);
