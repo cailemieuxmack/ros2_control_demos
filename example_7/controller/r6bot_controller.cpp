@@ -117,6 +117,8 @@ controller_interface::CallbackReturn RobotController::on_configure(const rclcpp_
     [this](const std::shared_ptr<trajectory_msgs::msg::JointTrajectory> traj_msg) -> void
   {
     traj_msg_external_point_ptr_.writeFromNonRT(traj_msg);
+    //DEBUG
+    std::cout << "we gor here" << std::endl;
     new_msg_ = true;
   };
 
