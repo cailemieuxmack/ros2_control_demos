@@ -68,6 +68,7 @@ int main(int argc, char ** argv)
 
   for (int i = 0; i < trajectory_len; i++)
   {
+    std::cout << "Sending trajectory..." << std::endl;
     // set endpoint twist
     double t = i;
     twist.vel.x(2 * 0.3 * cos(2 * M_PI * t / trajectory_len));
