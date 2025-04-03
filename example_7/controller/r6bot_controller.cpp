@@ -118,7 +118,11 @@ controller_interface::CallbackReturn RobotController::on_configure(const rclcpp_
   {
     traj_msg_external_point_ptr_.writeFromNonRT(traj_msg);
     //DEBUG
-    std::cout << "Received trajectory with header timestamp: " << traj_msg->header << std::endl;
+      // Extract and print the timestamp from the header
+    std::cout << "Received trajectory with header timestamp: " 
+        << "sec: " << traj_msg->header.stamp.sec 
+        << ", nanosec: " << traj_msg->header.stamp.nanosec 
+        << std::endl;
     new_msg_ = true;
   };
 
