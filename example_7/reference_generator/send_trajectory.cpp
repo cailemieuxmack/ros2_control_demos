@@ -109,9 +109,13 @@ int main(int argc, char ** argv)
   std::cout << "Sending trajectory..." << std::endl;
   pub->publish(trajectory_msg);
   std::cout << "Sent trajectory" << std::endl;
-  while (rclcpp::ok())
-  {
-  }
+
+  std::cout << rclcpp::ok() << std::endl;
+  rclcpp::spin(node);
+  rclcpp::shutdown();
+  // while (rclcpp::ok())
+  // {
+  // }
 
   return 0;
 }
