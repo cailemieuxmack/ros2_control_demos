@@ -66,9 +66,9 @@ int main(int argc, char ** argv)
   int loop_rate = trajectory_len / total_time;
   double dt = 1.0 / loop_rate;
 
+  std::cout << "generating trajectory..." << std::endl;
   for (int i = 0; i < trajectory_len; i++)
   {
-    std::cout << "Sending trajectory..." << std::endl;
     // set endpoint twist
     double t = i;
     twist.vel.x(2 * 0.3 * cos(2 * M_PI * t / trajectory_len));
@@ -106,7 +106,9 @@ int main(int argc, char ** argv)
       trajectory_len - loop_rate * (trajectory_len / loop_rate)));  // implicit integer division
   trajectory_msg.points.push_back(trajectory_point_msg);
 
+  std::cout << "Sending trajectory..." << std::endl;
   pub->publish(trajectory_msg);
+  std::cout << "Sent trajectory" << std::endl;
   while (rclcpp::ok())
   {
   }
