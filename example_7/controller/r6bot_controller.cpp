@@ -118,7 +118,7 @@ controller_interface::CallbackReturn RobotController::on_configure(const rclcpp_
   {
     traj_msg_external_point_ptr_.writeFromNonRT(traj_msg);
     //DEBUG
-    std::cout << "we got here" << std::endl;
+    std::cout << "Received trajectory with header timestamp: " << traj_msg->header << std::endl;
     new_msg_ = true;
   };
 
@@ -187,12 +187,13 @@ controller_interface::return_type RobotController::update(
 {
   if (new_msg_)
   {
+    std::cout << "Update has recieved a new message" << std::endl
     trajectory_msg_ = *traj_msg_external_point_ptr_.readFromRT();
     start_time_ = time;
     new_msg_ = false;
   }
 
-  std::cout << "Before traj_msg check " << std::endl;
+  //std::cout << "Before traj_msg check " << std::endl;
   if (trajectory_msg_ != nullptr)
   {
     std::cout << "traj_msg exists " << std::endl;

@@ -110,12 +110,11 @@ int main(int argc, char ** argv)
   pub->publish(trajectory_msg);
   std::cout << "Sent trajectory" << std::endl;
 
-  std::cout << rclcpp::ok() << std::endl;
-  rclcpp::spin(node);
-  rclcpp::shutdown();
-  // while (rclcpp::ok())
-  // {
-  // }
+  // rclcpp::spin(node);
+  // rclcpp::shutdown();
+  while (rclcpp::ok())
+  {
+  }
 
   return 0;
 }
