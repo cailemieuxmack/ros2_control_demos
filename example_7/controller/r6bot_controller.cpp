@@ -191,7 +191,7 @@ controller_interface::return_type RobotController::update(
 {
   if (new_msg_)
   {
-    std::cout << "Update has recieved a new message" << std::endl
+    std::cout << "Update has recieved a new message" << std::endl;
     trajectory_msg_ = *traj_msg_external_point_ptr_.readFromRT();
     start_time_ = time;
     new_msg_ = false;
