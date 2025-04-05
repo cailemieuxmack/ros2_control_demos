@@ -349,9 +349,11 @@ void RobotController::setup_mapped_mem() {
 
 void RobotController::serialize_joint_trajectory(const std::shared_ptr<trajectory_msgs::msg::JointTrajectory>& src, MappedJointTrajectory& dest) {
   if (!src) {
-    std::cerr << "Error: trajectory_msg_ is null" << std::endl;
+    std::cerr << "Error in serialize_joint_trajectory: trajectory_msg_ is null" << std::endl;
     return;
   }
+
+  std::cerr << "serialize_joint_trajectory: Serializing..." << std::endl;
 
   // Serialize joint names
   dest.joint_names_length = src->joint_names.size();
@@ -359,9 +361,12 @@ void RobotController::serialize_joint_trajectory(const std::shared_ptr<trajector
       strncpy(dest.joint_names[i], src->joint_names[i].c_str(), sizeof(dest.joint_names[i]));
   }
 
+  std::cerr << "serialize_joint_trajectory: done with joint names" << std::endl;
+
   // Serialize points
   dest.points_length = src->points.size();
   for (size_t i = 0; i < src->points.size(); ++i) {
+    std::cerr << "serialize_joint_trajectory: Inside main for loop" << std::endl;
       const auto& point = src->points[i];
       auto& mapped_point = dest.points[i];
 
