@@ -353,7 +353,7 @@ void RobotController::serialize_joint_trajectory(const std::shared_ptr<trajector
     return;
   }
 
-  std::cerr << "serialize_joint_trajectory: Serializing..." << std::endl;
+  std::cout << "serialize_joint_trajectory: Serializing..." << std::endl;
 
   // Serialize joint names
   dest.joint_names_length = src->joint_names.size();
@@ -361,32 +361,36 @@ void RobotController::serialize_joint_trajectory(const std::shared_ptr<trajector
       strncpy(dest.joint_names[i], src->joint_names[i].c_str(), sizeof(dest.joint_names[i]));
   }
 
-  std::cerr << "serialize_joint_trajectory: done with joint names" << std::endl;
+  std::cout << "serialize_joint_trajectory: done with joint names" << std::endl;
 
   // Serialize points
   dest.points_length = src->points.size();
   for (size_t i = 0; i < src->points.size(); ++i) {
-    std::cerr << "serialize_joint_trajectory: Inside main for loop" << std::endl;
+    // std::cout << "serialize_joint_trajectory: Inside main for loop" << std::endl;
       const auto& point = src->points[i];
       auto& mapped_point = dest.points[i];
 
       mapped_point.positions_length = point.positions.size();
       for (size_t j = 0; j < point.positions.size(); ++j) {
+          std::cout << "serialize_joint_trajectory - position: " << point.positions[j] << std::endl;
           mapped_point.positions[j] = point.positions[j];
       }
 
       mapped_point.velocities_length = point.velocities.size();
       for (size_t j = 0; j < point.velocities.size(); ++j) {
+          std::cout << "serialize_joint_trajectory - velo: " << point.velocities[j] << std::endl;
           mapped_point.velocities[j] = point.velocities[j];
       }
 
       mapped_point.accelerations_length = point.accelerations.size();
       for (size_t j = 0; j < point.accelerations.size(); ++j) {
+          std::cout << "serialize_joint_trajectory - accel: " << point.accelerations[j] << std::endl;
           mapped_point.accelerations[j] = point.accelerations[j];
       }
 
       mapped_point.effort_length = point.effort.size();
       for (size_t j = 0; j < point.effort.size(); ++j) {
+          std::cout << "serialize_joint_trajectory - effort: " << point.effort[j] << std::endl;
           mapped_point.effort[j] = point.effort[j];
       }
 
