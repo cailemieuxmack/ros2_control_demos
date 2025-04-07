@@ -211,11 +211,15 @@ controller_interface::return_type RobotController::update(
     std::cout << "Serialized" << std::endl;
 
     // Actually store the state in the maped memory
-    for(int i = 0; i < 5; i++){
-      state_vote->value = tmp_state->value;
-    }
+    // for(int i = 0; i < 5; i++){
+    state_vote->value = tmp_state->value;
+
+    std::cout << "Stored the value" << std::endl;
+    // }
     // Store the index last
     state_vote->idx = tmp_state->idx;
+
+    std::cout << "Stored the index" << std::endl;
 
     // Sleep so that the controller can run
     rclcpp::sleep_for(std::chrono::nanoseconds(100));
