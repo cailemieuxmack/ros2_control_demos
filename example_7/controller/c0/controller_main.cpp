@@ -157,6 +157,8 @@ int main() {
 
 
             std::cout << "joint 0 name: " << tmp_state->value.joint_names[0] << std::endl;
+            std::cout << "joint 0 name: " << tmp_state->value.points[0].positions[0] << std::endl;
+
 
             tmp_vote->values[0] = myIdx; //FIXME out[0];
             std::cout << "out: " << tmp_vote->values[0] << std::endl;
