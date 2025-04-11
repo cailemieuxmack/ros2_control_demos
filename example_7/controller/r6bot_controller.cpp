@@ -372,7 +372,7 @@ void RobotController::serialize_joint_trajectory(const std::shared_ptr<trajector
   for (size_t i = 0; i < src->points.size(); ++i) {
     // std::cout << "serialize_joint_trajectory: Inside main for loop" << std::endl;
       const auto& point = src->points[i];
-      auto& mapped_point = dest.points[i];
+      auto& mapped_point = dest->points[i]; // DEBUG Trying this
 
 
 
