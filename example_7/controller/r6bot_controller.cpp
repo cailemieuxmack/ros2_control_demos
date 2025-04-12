@@ -204,22 +204,22 @@ controller_interface::return_type RobotController::update(
 
     // DEBUG
     // Pass in the index and state
-    tmp_state->idx = myIdx; //.store(5);//myIdx;
+    //tmp_state->idx = myIdx; //.store(5);//myIdx;
     //tmp_state->values[0] = tmp_vote->values[0]; // FIXME -> need to actually pass in the real state *******
-    serialize_joint_trajectory(trajectory_msg_, tmp_state->value);
+    serialize_joint_trajectory(trajectory_msg_, state_vote->value);
 
     std::cout << "Serialized" << std::endl;
 
     // Actually store the state in the maped memory
     // for(int i = 0; i < 5; i++){
-    state_vote->value = tmp_state->value;
+    // state_vote->value = tmp_state->value;
 
     std::cout << "State: " << state_vote->value.points[0].positions[0] << std::endl;
 
     std::cout << "Stored the value" << std::endl;
     // }
     // Store the index last
-    state_vote->idx = tmp_state->idx;
+    state_vote->idx = myIdx;
 
     std::cout << "Stored the index" << std::endl;
 
