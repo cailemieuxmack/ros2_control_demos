@@ -353,7 +353,7 @@ void RobotController::setup_mapped_mem() {
 
 }
 
-void RobotController::serialize_joint_trajectory(const std::shared_ptr<trajectory_msgs::msg::JointTrajectory>& src, MappedJointTrajectory& dest) {
+void RobotController::serialize_joint_trajectory(const std::shared_ptr<trajectory_msgs::msg::JointTrajectory>& src, MappedJointTrajectory dest) {
   if (!src) {
     std::cerr << "Error in serialize_joint_trajectory: trajectory_msg_ is null" << std::endl;
     return;
