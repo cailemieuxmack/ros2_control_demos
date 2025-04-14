@@ -69,12 +69,13 @@ struct MappedJointTrajectory {
 
 typedef struct {
   int idx;
-  double values[1]; // u, (dx, da) <- not yet
+  MappedJointTrajectoryPoint value; // u, (dx, da) <- not yet
 } Vote;
 
 typedef struct {
   int idx;
   MappedJointTrajectory value; // x,a,t temp(dx, da)
+  double cur_time_seconds;
 } State_vote;
 
 // int fd0;
