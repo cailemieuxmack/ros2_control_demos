@@ -228,7 +228,7 @@ controller_interface::return_type RobotController::update(
 
     // Get the proposed values
     tmp_vote->idx = data0->idx; 
-    *tmp_vote.value = *data0.value;
+    (*tmp_vote).value = (*data0).value;
     //printf("idx: %d   value: %f\n", tmp_vote->idx, tmp_vote->values[0]);
     //printf("read: %d,   %f\n", tmp_vote->idx, tmp_vote->values[0]);
 
@@ -237,7 +237,7 @@ controller_interface::return_type RobotController::update(
     //if (tmp_vote->idx.load() >= myIdx) {
     if (tmp_vote->idx >= myIdx) {
       // We have a new message
-      std::cout << "got: " << tmp_vote->values[0] << std::endl;
+      std::cout << "got: " << tmp_vote->value[0] << std::endl;
       // std::cout << sizeof(trajectory_msg_) << std::endl;
 
       // update index index
