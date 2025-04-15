@@ -206,7 +206,7 @@ controller_interface::return_type RobotController::update(
     // Pass in the index and state
     //tmp_state->idx = myIdx; //.store(5);//myIdx;
     //tmp_state->values[0] = tmp_vote->values[0]; // FIXME -> need to actually pass in the real state *******
-    serialize_joint_trajectory(trajectory_msg_, state_vote->value);
+    serialize_joint_trajectory(trajectory_msg_, *state_vote.value);
 
     std::cout << "Serialized" << std::endl;
 
@@ -228,7 +228,7 @@ controller_interface::return_type RobotController::update(
 
     // Get the proposed values
     tmp_vote->idx = data0->idx; 
-    tmp_vote->values[0] = data0->values[0];
+    *tmp_vote.value = *data0.value;
     //printf("idx: %d   value: %f\n", tmp_vote->idx, tmp_vote->values[0]);
     //printf("read: %d,   %f\n", tmp_vote->idx, tmp_vote->values[0]);
 
