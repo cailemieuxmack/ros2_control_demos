@@ -84,21 +84,21 @@ int main() {
     }
     std::cout << state << std::endl;
 
-    // open the internal state file
-    int fd1 = open("_internal", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
-    // init the size of the file
-    lseek(fd1, sizeof(Internal), SEEK_SET);
-    write(fd1, "", 1);
-    lseek(fd1, 0, SEEK_SET);
+    // // open the internal state file
+    // int fd1 = open("_internal", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+    // // init the size of the file
+    // lseek(fd1, sizeof(Internal), SEEK_SET);
+    // write(fd1, "", 1);
+    // lseek(fd1, 0, SEEK_SET);
 
-    // map the file into memory
-    Internal* internal = static_cast<Internal*>(mmap(NULL, sizeof(Internal), PROT_WRITE, MAP_SHARED, fd1, 0));
-    close(fd1);
-    if (internal == reinterpret_cast<Internal*>(-1)) {
-        std::cerr << "error: " << strerror(errno) << std::endl;
-        exit(1);
-    }
-    std::cout << internal << std::endl;
+    // // map the file into memory
+    // Internal* internal = static_cast<Internal*>(mmap(NULL, sizeof(Internal), PROT_WRITE, MAP_SHARED, fd1, 0));
+    // close(fd1);
+    // if (internal == reinterpret_cast<Internal*>(-1)) {
+    //     std::cerr << "error: " << strerror(errno) << std::endl;
+    //     exit(1);
+    // }
+    // std::cout << internal << std::endl;
 
     // open or create the file with the proper permissions
     int fd2 = open("_data0", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
@@ -128,7 +128,7 @@ int main() {
 
     Vote* tmp_vote = static_cast<Vote*>(malloc(sizeof(Vote)));
     State* tmp_state = static_cast<State*>(malloc(sizeof(State)));
-    Internal* tmp_internal = static_cast<Internal*>(malloc(sizeof(Internal)));
+    // Internal* tmp_internal = static_cast<Internal*>(malloc(sizeof(Internal)));
 
     //std::cout << "calling init" << std::endl;
     init();
@@ -162,7 +162,7 @@ int main() {
 
 
             //tmp_vote->values[0] = myIdx; //FIXME out[0];
-            std::cout << "out: " << tmp_vote->values[0] << std::endl;
+            // std::cout << "out: " << tmp_vote->values[0] << std::endl;
             myIdx = tmp_state->idx;
             //tmp_vote->idx = myIdx;
             //data->value = tmp_vote->values[0]; //.store(tmp_vote->values[0], std::memory_order_relaxed);
