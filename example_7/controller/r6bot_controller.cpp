@@ -186,8 +186,7 @@ void interpolate_trajectory_point(
   interpolate_point(traj_msg.points[ind], traj_msg.points[ind + 1], point_interp, delta);
 }
 
-controller_interface::return_type RobotController::update(
-  const rclcpp::Time & time, const rclcpp::Duration & /*period*/)
+controller_interface::return_type RobotController::update(const rclcpp::Time & time, const rclcpp::Duration & /*period*/)
 {
   if (new_msg_)
   {
@@ -214,7 +213,7 @@ controller_interface::return_type RobotController::update(
     // for(int i = 0; i < 5; i++){
     // state_vote->value = tmp_state->value;
 
-    std::cout << "State: " << state_vote->value.points[0].positions[0] << std::endl;
+    std::cout << "State: " << state_vote->value.points[0].positions[0] << ", " << state_vote->value.points[0].positions[1]<< std::endl;
 
     std::cout << "Stored the value" << std::endl;
     // }
@@ -227,8 +226,8 @@ controller_interface::return_type RobotController::update(
     rclcpp::sleep_for(std::chrono::nanoseconds(100));
 
     // Get the proposed values
-    tmp_vote->idx = data0->idx; 
-    (*tmp_vote).value = (*data0).value;
+    // tmp_vote->idx = data0->idx; 
+    // (*tmp_vote).value = (*data0).value;
     //printf("idx: %d   value: %f\n", tmp_vote->idx, tmp_vote->values[0]);
     //printf("read: %d,   %f\n", tmp_vote->idx, tmp_vote->values[0]);
 
@@ -237,7 +236,7 @@ controller_interface::return_type RobotController::update(
     //if (tmp_vote->idx.load() >= myIdx) {
     if (tmp_vote->idx >= myIdx) {
       // We have a new message
-      std::cout << "got: " << tmp_vote->value[0] << std::endl;
+      //std::cout << "got: " << tmp_vote->value[0] << std::endl; **********************
       // std::cout << sizeof(trajectory_msg_) << std::endl;
 
       // update index index
@@ -331,7 +330,7 @@ void RobotController::setup_mapped_mem() {
   //     state_vote->values[i] = 1.0; //.store(1.0);
   // }
   // std::atomic_init(&state_vote->idx, 1);
-  state_vote->idx = 1; //.store(1);
+  state_vote->idx = 0; //.store(1);
 
   myIdx = 0;
 
@@ -344,10 +343,10 @@ void RobotController::setup_mapped_mem() {
 
   // Do I have to init the tmp_state too?
   tmp_vote->idx = 0; //.store(0);
-  tmp_vote->values[0] = 1.0; //.store(1.0);
+  // tmp_vote->values[0] = 1.0; //.store(1.0);
 
   tmp_state->idx = 0; //.store(0);
-  tmp_vote->values[0] = 1.0; //.store(1.0);
+  // tmp_vote->values[0] = 1.0; //.store(1.0);
 
   have_actuation = false;
 
