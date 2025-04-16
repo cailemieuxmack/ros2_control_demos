@@ -205,7 +205,7 @@ controller_interface::return_type RobotController::update(const rclcpp::Time & t
     // Pass in the index and state
     //tmp_state->idx = myIdx; //.store(5);//myIdx;
     //tmp_state->values[0] = tmp_vote->values[0]; // FIXME -> need to actually pass in the real state *******
-    serialize_joint_trajectory(trajectory_msg_, *state_vote.value);
+    serialize_joint_trajectory(trajectory_msg_, (*state_vote).value);
 
     std::cout << "Serialized" << std::endl;
 
