@@ -41,6 +41,19 @@ typedef struct {
     MappedJointTrajectoryPoint points[200]; // Assuming a maximum of 100 points
 } MappedJointTrajectory;
 
+typedef struct in_struct
+{
+    /* data */
+};
+
+typedef struct out_struct
+{
+    /* data */
+};
+
+
+
+
 
 extern double in[];
 extern double out[];

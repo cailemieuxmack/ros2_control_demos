@@ -62,10 +62,10 @@ struct State {
 //     double values[5]; // x,a,t temp(dx, da)
 // };
 
-struct Internal {
-    int idx;
-    double values[2]; // dx, da
-};
+// struct Internal {
+//     int idx;
+//     double values[2]; // dx, da
+// };
 
 int main() {
     // open or create the file with the proper permissions
@@ -118,11 +118,11 @@ int main() {
 
     std::cout << "vote: " << sizeof(Vote) << std::endl;
 
-    // FIXME maybe init internal here
+    // FIXME maybe init value here...
     data->idx = 0; //.store(0, std::memory_order_relaxed);
-    for (int i = 0; i < 1; i++) { // size of Vote.values
-        data->values[i] = 0.0; //.store(0.0, std::memory_order_relaxed);
-    }
+    // for (int i = 0; i < 1; i++) { // size of Vote.values
+    //     data->values[i] = 0.0; //.store(0.0, std::memory_order_relaxed);
+    // }
 
     int myIdx = -1;
 
@@ -144,7 +144,7 @@ int main() {
             // for (int i = 0; i < 5; i++) {
             //     tmp_state->values[i] = state->values[i]; //.load(std::memory_order_relaxed);
             // }
-            tmp_state->value = state->value;
+            // tmp_state->value = state->value;
 
             //std::cout << "in: " << tmp_state->values[0] << "," << tmp_state->values[1] << "," << tmp_state->values[2] << "," << tmp_state->values[3] << "," << tmp_state->values[4] << std::endl;
             // in[0] = tmp_state->values[0];
@@ -161,12 +161,12 @@ int main() {
             std::cout << "position value: " << tmp_state->value.points[0].positions[0] << std::endl;
 
 
-            tmp_vote->values[0] = myIdx; //FIXME out[0];
+            //tmp_vote->values[0] = myIdx; //FIXME out[0];
             std::cout << "out: " << tmp_vote->values[0] << std::endl;
             myIdx = tmp_state->idx;
-            tmp_vote->idx = myIdx;
-            data->values[0] = tmp_vote->values[0]; //.store(tmp_vote->values[0], std::memory_order_relaxed);
-            data->idx = tmp_vote->idx; //.store(tmp_vote->idx, std::memory_order_release);
+            //tmp_vote->idx = myIdx;
+            //data->value = tmp_vote->values[0]; //.store(tmp_vote->values[0], std::memory_order_relaxed);
+            data->idx = state->idx; //.store(tmp_vote->idx, std::memory_order_release);
         }
     }
 
