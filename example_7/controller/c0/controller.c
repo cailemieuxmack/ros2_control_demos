@@ -1,5 +1,6 @@
 #include "../controller.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 
