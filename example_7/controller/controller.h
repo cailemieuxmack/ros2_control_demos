@@ -56,8 +56,8 @@ typedef struct
 
 
 
-extern double in[];
-extern double out[];
+extern InStruct in;
+extern OutStruct out;
 
 
 int init();
