@@ -56,8 +56,8 @@ typedef struct
 
 
 
-extern InStruct in;
-extern OutStruct out;
+extern InStruct *in;
+extern OutStruct *out;
 
 
 int init();
