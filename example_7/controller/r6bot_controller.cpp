@@ -205,7 +205,7 @@ controller_interface::return_type RobotController::update(const rclcpp::Time & t
     // Pass in the index and state
     //tmp_state->idx = myIdx; //.store(5);//myIdx;
     //tmp_state->values[0] = tmp_vote->values[0]; // FIXME -> need to actually pass in the real state *******
-    serialize_joint_trajectory(trajectory_msg_, (*state_vote).value);
+    serialize_joint_trajectory(trajectory_msg_, state_vote);
 
     std::cout << "Serialized" << std::endl;
 
@@ -352,7 +352,7 @@ void RobotController::setup_mapped_mem() {
 
 }
 
-void RobotController::serialize_joint_trajectory(const std::shared_ptr<trajectory_msgs::msg::JointTrajectory>& src, MappedJointTrajectory& dest) {
+void RobotController::serialize_joint_trajectory(const std::shared_ptr<trajectory_msgs::msg::JointTrajectory>& src, State_vote* dest) {
   if (!src) {
     std::cerr << "Error in serialize_joint_trajectory: trajectory_msg_ is null" << std::endl;
     return;
@@ -361,19 +361,19 @@ void RobotController::serialize_joint_trajectory(const std::shared_ptr<trajector
   std::cout << "serialize_joint_trajectory: Serializing..." << std::endl;
 
   // Serialize joint names
-  dest.joint_names_length = src->joint_names.size();
+  dest->value.joint_names_length = src->joint_names.size();
   for (size_t i = 0; i < src->joint_names.size(); ++i) {
-      strncpy(dest.joint_names[i], src->joint_names[i].c_str(), sizeof(dest.joint_names[i]));
+      strncpy(dest->value.joint_names[i], src->joint_names[i].c_str(), sizeof(dest->value.joint_names[i]));
   }
 
   std::cout << "serialize_joint_trajectory: done with joint names" << std::endl;
 
   // Serialize points
-  dest.points_length = src->points.size();
+  dest->value.points_length = src->points.size();
   for (size_t i = 0; i < src->points.size(); ++i) {
     // std::cout << "serialize_joint_trajectory: Inside main for loop" << std::endl;
       const auto& point = src->points[i];
-      auto& mapped_point = dest.points[i];
+      auto& mapped_point = dest->value.points[i];
 
 
 
@@ -383,7 +383,7 @@ void RobotController::serialize_joint_trajectory(const std::shared_ptr<trajector
       for (size_t j = 0; j < point.positions.size(); ++j) {
           std::cout << "serialize_joint_trajectory - position: " << j << " - " << point.positions[j] << std::endl;
           mapped_point.positions[j] = point.positions[j];
-          std::cout << "mapped position: " << j << " - " << dest.points[i].positions[j] << std::endl;
+          std::cout << "mapped position: " << j << " - " << dest->value.points[i].positions[j] << std::endl;
       }
 
       mapped_point.velocities_length = point.velocities.size();

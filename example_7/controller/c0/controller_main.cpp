@@ -135,12 +135,12 @@ int main() {
     //std::cout << "returned from init" << std::endl;
 
     while (true) {
-        tmp_state->idx = state->idx; //.load(std::memory_order_acquire);
+        //tmp_state->idx = state->idx; //.load(std::memory_order_acquire);
 
         //std::cout << "Idx recieved: " << tmp_state->idx << std::endl;
 
 
-        if (tmp_state->idx > myIdx) {
+        if (state->idx > myIdx) {
             // for (int i = 0; i < 5; i++) {
             //     tmp_state->values[i] = state->values[i]; //.load(std::memory_order_relaxed);
             // }
@@ -157,7 +157,7 @@ int main() {
             std::cout << "Idx recieved: " << tmp_state->idx << std::endl;
 
 
-            std::cout << "joint 0 name: " << tmp_state->value.joint_names[0] << std::endl;
+            std::cout << "joint 0 name: " << state->value.joint_names[0] << std::endl;
             std::cout << "position value: " << tmp_state->value.points[0].positions[0] << std::endl;
 
 
