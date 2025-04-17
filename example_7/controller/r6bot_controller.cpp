@@ -213,7 +213,7 @@ controller_interface::return_type RobotController::update(const rclcpp::Time & t
     // for(int i = 0; i < 5; i++){
     // state_vote->value = tmp_state->value;
 
-    std::cout << "State: " << state_vote->value.points[0].positions[0] << ", " << state_vote->value.points[0].positions[1]<< std::endl;
+    std::cout << "State: " << state_vote->value.points[1].positions[0] << ", " << state_vote->value.points[1].positions[1]<< std::endl;
 
     std::cout << "Stored the value" << std::endl;
     // }
