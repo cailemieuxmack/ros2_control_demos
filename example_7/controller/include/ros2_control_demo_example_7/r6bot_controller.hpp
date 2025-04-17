@@ -96,7 +96,7 @@ public:
   //DEBUG
   void setup_mapped_mem();
 
-  void serialize_joint_trajectory(const std::shared_ptr<trajectory_msgs::msg::JointTrajectory>& src, MappedJointTrajectory& dest);
+  void serialize_joint_trajectory(const std::shared_ptr<trajectory_msgs::msg::JointTrajectory>& src, State_vote* dest);
 
   RobotController();
 
