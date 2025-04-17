@@ -7,8 +7,8 @@
 // InStruct in;
 // OutStruct out;
 
-double in[5];
-double out[1];
+InStruct *in;
+OutStruct *out;
 
 
 
@@ -45,15 +45,17 @@ double out[1];
 
 int init() {
     printf("initializing controller...\n");
+    in = malloc(sizeof(InStruct));
+    out = malloc(sizeof(OutStruct));
 }
 
 
 int step() {
-    double msg = in[0];
-    printf("msg: %f\n", msg);
-    out[0] = msg + 1;
+    // double msg = in[0];
+    printf("Inside Controller: %f\n", in->value.points[1].positions[0]);
+    // out[0] = msg + 1;
     // const trajectory_msgs::msg::JointTrajectory & traj_msg = in.traj_msg;
     // const rclcpp::Duration & cur_time = in.time - in.start_time;
 
-    // interpolate_trajectory_point(traj_msg, cur_time, out.point_interp);
+    // interpolate_trajectory_point(in->value, in->cur_time, out->vote);
 }

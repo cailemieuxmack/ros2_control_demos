@@ -41,15 +41,16 @@ typedef struct {
     MappedJointTrajectoryPoint points[200]; // Assuming a maximum of 100 points
 } MappedJointTrajectory;
 
-typedef struct in_struct
+typedef struct
 {
-    /* data */
-};
+    MappedJointTrajectory value;
+    double cur_time;
+} InStruct;
 
-typedef struct out_struct
+typedef struct
 {
-    /* data */
-};
+    MappedJointTrajectoryPoint vote;
+} OutStruct;
 
 
 
