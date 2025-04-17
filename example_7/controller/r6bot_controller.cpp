@@ -373,23 +373,23 @@ void RobotController::serialize_joint_trajectory(const std::shared_ptr<trajector
   for (size_t i = 0; i < src->points.size(); ++i) {
     // std::cout << "serialize_joint_trajectory: Inside main for loop" << std::endl;
       const auto& point = src->points[i];
-      auto& mapped_point = dest->value.points[i];
+      //auto& mapped_point = dest->value.points[i];
 
 
 
-      std::cout << "serialize_joint_trajectory - inside loop: " << i << " - " << &mapped_point << std::endl;
+      std::cout << "serialize_joint_trajectory - inside loop: " << i << " - " << &dest->value.points[i] << std::endl;
 
-      mapped_point.positions_length = point.positions.size();
+      dest->value.points[i].positions_length = point.positions.size();
       for (size_t j = 0; j < point.positions.size(); ++j) {
           std::cout << "serialize_joint_trajectory - position: " << j << " - " << point.positions[j] << std::endl;
-          mapped_point.positions[j] = point.positions[j];
+          dest->value.points[i].positions[j] = point.positions[j];
           std::cout << "mapped position: " << j << " - " << dest->value.points[i].positions[j] << std::endl;
       }
 
-      mapped_point.velocities_length = point.velocities.size();
+      dest->value.points[i].velocities_length = point.velocities.size();
       for (size_t j = 0; j < point.velocities.size(); ++j) {
           std::cout << "serialize_joint_trajectory - velo: " << point.velocities[j] << std::endl;
-          mapped_point.velocities[j] = point.velocities[j];
+          dest->value.points[i].velocities[j] = point.velocities[j];
       }
 
       // mapped_point.accelerations_length = point.accelerations.size();
