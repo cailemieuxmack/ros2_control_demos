@@ -1,3 +1,4 @@
+
 // Copyright 2023 ros2_control Development Team
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -66,7 +67,6 @@ int main(int argc, char ** argv)
   int loop_rate = trajectory_len / total_time;
   double dt = 1.0 / loop_rate;
 
-  std::cout << "generating trajectory..." << std::endl;
   for (int i = 0; i < trajectory_len; i++)
   {
     // set endpoint twist
@@ -106,12 +106,7 @@ int main(int argc, char ** argv)
       trajectory_len - loop_rate * (trajectory_len / loop_rate)));  // implicit integer division
   trajectory_msg.points.push_back(trajectory_point_msg);
 
-  std::cout << "Sending trajectory..." << std::endl;
   pub->publish(trajectory_msg);
-  std::cout << "Sent trajectory" << std::endl;
-
-  // rclcpp::spin(node);
-  // rclcpp::shutdown();
   while (rclcpp::ok())
   {
   }
