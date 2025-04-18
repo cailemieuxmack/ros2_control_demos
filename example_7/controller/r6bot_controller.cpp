@@ -226,7 +226,7 @@ controller_interface::return_type RobotController::update(const rclcpp::Time & t
     std::cout << "Stored the index" << std::endl;
 
     // Sleep so that the controller can run
-    rclcpp::sleep_for(std::chrono::nanoseconds(100));
+    rclcpp::sleep_for(std::chrono::nanoseconds(500));
 
     // Get the proposed values
     // tmp_vote->idx = data0->idx; 
@@ -234,12 +234,12 @@ controller_interface::return_type RobotController::update(const rclcpp::Time & t
     //printf("idx: %d   value: %f\n", tmp_vote->idx, tmp_vote->values[0]);
     //printf("read: %d,   %f\n", tmp_vote->idx, tmp_vote->values[0]);
 
-    std::cout << "idx recieved: " << tmp_vote->idx << std::endl;
+    std::cout << "idx recieved: " << data0->idx << " - myIDX: " << myIdx <<std::endl;
 
     //if (tmp_vote->idx.load() >= myIdx) {
     if (data0->idx >= myIdx) {
       // We have a new message
-      //std::cout << "got: " << tmp_vote->value[0] << std::endl; **********************
+      std::cout << "got a vote from controller 0" << std::endl;
       // std::cout << sizeof(trajectory_msg_) << std::endl;
 
       // update index index
@@ -391,7 +391,7 @@ void RobotController::serialize_joint_trajectory(const std::shared_ptr<trajector
           mapped_point->positions[j] = point.positions[j];
           std::cout << "mapped position: " << j << " - " << mapped_point->positions[j] << std::endl;
       }
-      
+
       mapped_point->velocities_length = point.velocities.size();
       std::cout << "After point velo size" << std::endl;
       for (size_t j = 0; j < point.velocities.size(); ++j) {
