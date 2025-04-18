@@ -246,6 +246,7 @@ controller_interface::return_type RobotController::update(const rclcpp::Time & t
       myIdx = tmp_vote->idx; //.load();
       myIdx++;
     } else {
+      std::cout << "did not get a vote from controller 0" << std::endl;
       // did not vote in time...
     }
 
