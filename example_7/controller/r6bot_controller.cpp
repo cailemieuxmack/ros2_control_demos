@@ -383,19 +383,19 @@ void RobotController::serialize_joint_trajectory(const std::shared_ptr<trajector
 
 
 
-      std::cout << "serialize_joint_trajectory - inside loop: " << i << " - " << &dest->value.points[i] << std::endl;
+      //std::cout << "serialize_joint_trajectory - inside loop: " << i << " - " << &dest->value.points[i] << std::endl;
 
       mapped_point->positions_length = point.positions.size();
       for (size_t j = 0; j < point.positions.size(); ++j) {
-          std::cout << "serialize_joint_trajectory - position: " << j << " - " << point.positions[j] << std::endl;
+          //std::cout << "serialize_joint_trajectory - position: " << j << " - " << point.positions[j] << std::endl;
           mapped_point->positions[j] = point.positions[j];
-          std::cout << "mapped position: " << j << " - " << mapped_point->positions[j] << std::endl;
+          //std::cout << "mapped position: " << j << " - " << mapped_point->positions[j] << std::endl;
       }
 
       mapped_point->velocities_length = point.velocities.size();
-      std::cout << "After point velo size" << std::endl;
+      //std::cout << "After point velo size" << std::endl;
       for (size_t j = 0; j < point.velocities.size(); ++j) {
-          std::cout << "serialize_joint_trajectory - velo: " << point.velocities[j] << std::endl;
+          //std::cout << "serialize_joint_trajectory - velo: " << point.velocities[j] << std::endl;
           mapped_point->velocities[j] = point.velocities[j];
       }
 
@@ -412,10 +412,10 @@ void RobotController::serialize_joint_trajectory(const std::shared_ptr<trajector
       // }
 
 
-      std::cout << "About to serialize time_from_start: " << std::endl;
+      //std::cout << "About to serialize time_from_start: " << std::endl;
       mapped_point->time_from_start_sec = point.time_from_start.sec;
       mapped_point->time_from_start_nsec = point.time_from_start.nanosec;
-      std::cout << "Serialized time_from_start" << std::endl;
+      //std::cout << "Serialized time_from_start" << std::endl;
   }
 }
 
