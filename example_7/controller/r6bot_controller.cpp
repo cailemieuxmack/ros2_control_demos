@@ -178,7 +178,7 @@ void interpolate_trajectory_point(
 {
   double traj_len = traj_msg.points.size();
   auto last_time = traj_msg.points[traj_len - 1].time_from_start;
-  double total_time = traj_msg.points[traj_len - 1].time_from_start_sec + traj_msg.points[traj_len - 1].time_from_start_nsec * 1E-9;
+  double total_time = last_time.sec + last_time.nanosec * 1E-9;
 
   size_t ind = cur_time.seconds() * (traj_len / total_time);
   ind = std::min(static_cast<double>(ind), traj_len - 2);
@@ -410,7 +410,7 @@ void RobotController::serialize_joint_trajectory(const std::shared_ptr<trajector
       // }
 
       mapped_point->time_from_start_sec = point.time_from_start.sec;
-      mapped_point->time_from_start_nsec = point.time_from_start.nsec;
+      mapped_point->time_from_start_nsec = point.time_from_start.nanosec;
   }
 }
 
