@@ -155,7 +155,7 @@ int main() {
             // in[4] = tmp_state->values[4];
 
             in->value = state->value;
-            in->cur_time = 0.0; // FIXME -> figure out how the time is done
+            in->cur_time_seconds = state->cur_time_sec; // FIXME -> figure out how the time is done
 
             step();
             std::cout << "Idx recieved: " << tmp_state->idx << std::endl;
