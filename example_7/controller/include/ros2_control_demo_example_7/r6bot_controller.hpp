@@ -42,22 +42,22 @@ namespace ros2_control_demo_example_7
 
 //DEBUG
 
-struct MappedJointTrajectoryPoint {
-    size_t positions_length;
-    double positions[100]; // Assuming a maximum of 100 positions
+typedef struct {
+  size_t positions_length;
+  double positions[100]; // Assuming a maximum of 100 positions
 
-    size_t velocities_length;
-    double velocities[100]; // Assuming a maximum of 100 velocities
+  size_t velocities_length;
+  double velocities[100]; // Assuming a maximum of 100 velocities
 
-    size_t accelerations_length;
-    double accelerations[100]; // Assuming a maximum of 100 accelerations
+  size_t accelerations_length;
+  double accelerations[100]; // Assuming a maximum of 100 accelerations
 
-    size_t effort_length;
-    double effort[100]; // Assuming a maximum of 100 effort values
+  size_t effort_length;
+  double effort[100]; // Assuming a maximum of 100 effort values
 
-    // uint64_t time_from_start_sec; // seconds part of the duration
-    // uint64_t time_from_start_nsec; // nanoseconds part of the duration
-};
+  int32_t time_from_start_sec; // seconds part of the duration
+  uint32_t time_from_start_nsec; // nanoseconds part of the duration
+} MappedJointTrajectoryPoint;
 
 struct MappedJointTrajectory {
     size_t joint_names_length;
@@ -75,7 +75,8 @@ typedef struct {
 typedef struct {
   int idx;
   MappedJointTrajectory value; // x,a,t temp(dx, da)
-  double cur_time_seconds;
+  int32_t cur_time_sec;
+  //uint32_t cur_time_nsec;
 } State_vote;
 
 // int fd0;
@@ -98,6 +99,8 @@ public:
 
   void serialize_joint_trajectory(const std::shared_ptr<trajectory_msgs::msg::JointTrajectory>& src, State_vote* dest);
 
+
+  
   RobotController();
 
   controller_interface::InterfaceConfiguration command_interface_configuration() const override;

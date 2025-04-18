@@ -6,6 +6,7 @@
 // #include "ros2_control_demo_example_7/r6bot_controller.hpp"
 
 #include <stddef.h>
+#include <stdint.h>
 // #include <algorithm>
 // #include <memory>
 // #include <string>
@@ -29,8 +30,8 @@ typedef struct {
     size_t effort_length;
     double effort[100]; // Assuming a maximum of 100 effort values
 
-    // uint64_t time_from_start_sec; // seconds part of the duration
-    // uint64_t time_from_start_nsec; // nanoseconds part of the duration
+    int32_t time_from_start_sec; // seconds part of the duration
+    uint32_t time_from_start_nsec; // nanoseconds part of the duration
 } MappedJointTrajectoryPoint;
 
 typedef struct {
@@ -44,7 +45,7 @@ typedef struct {
 typedef struct
 {
     MappedJointTrajectory value;
-    double cur_time;
+    uint32_t cur_time_seconds;
 } InStruct;
 
 typedef struct

@@ -54,7 +54,8 @@ struct Vote {
 struct State {
     int idx;
     MappedJointTrajectory value; // x,a,t temp(dx, da)
-    double cur_time_seconds;
+    int32_t cur_time_sec;
+    //uint32_t cur_time_nsec;
 };
 
 // struct State_NA {
@@ -164,12 +165,14 @@ int main() {
             std::cout << "position value: " << state->value.points[1].positions[0] << std::endl;
 
 
+            data->value = out->vote;
+
             //tmp_vote->values[0] = myIdx; //FIXME out[0];
             // std::cout << "out: " << tmp_vote->values[0] << std::endl;
-            myIdx = tmp_state->idx;
+            myIdx = state->idx;
             //tmp_vote->idx = myIdx;
             //data->value = tmp_vote->values[0]; //.store(tmp_vote->values[0], std::memory_order_relaxed);
-            data->idx = state->idx; //.store(tmp_vote->idx, std::memory_order_release);
+            data->idx = myIdx; //.store(tmp_vote->idx, std::memory_order_release);
         }
     }
 
