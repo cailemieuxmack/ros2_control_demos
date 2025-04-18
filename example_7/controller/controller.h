@@ -39,7 +39,7 @@ typedef struct {
     char joint_names[10][256]; // Assuming a maximum of 10 joint names, each with a maximum length of 256
 
     size_t points_length;
-    MappedJointTrajectoryPoint points[200]; // Assuming a maximum of 100 points
+    MappedJointTrajectoryPoint points[256]; // Assuming a maximum of 100 points
 } MappedJointTrajectory;
 
 typedef struct

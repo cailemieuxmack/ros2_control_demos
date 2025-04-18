@@ -64,7 +64,7 @@ struct MappedJointTrajectory {
     char joint_names[10][256]; // Assuming a maximum of 10 joint names, each with a maximum length of 256
 
     size_t points_length;
-    MappedJointTrajectoryPoint points[200]; // Assuming a maximum of 100 points
+    MappedJointTrajectoryPoint points[256]; // Assuming a maximum of 100 points
 };
 
 typedef struct {
@@ -100,7 +100,7 @@ public:
   void serialize_joint_trajectory(const std::shared_ptr<trajectory_msgs::msg::JointTrajectory>& src, State_vote* dest);
 
 
-  
+
   RobotController();
 
   controller_interface::InterfaceConfiguration command_interface_configuration() const override;
