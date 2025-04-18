@@ -127,8 +127,8 @@ int main() {
 
     int myIdx = -1;
 
-    Vote* tmp_vote = static_cast<Vote*>(malloc(sizeof(Vote)));
-    State* tmp_state = static_cast<State*>(malloc(sizeof(State)));
+    // Vote* tmp_vote = static_cast<Vote*>(malloc(sizeof(Vote)));
+    // State* tmp_state = static_cast<State*>(malloc(sizeof(State)));
     // Internal* tmp_internal = static_cast<Internal*>(malloc(sizeof(Internal)));
 
     //std::cout << "calling init" << std::endl;
@@ -158,11 +158,12 @@ int main() {
             in->cur_time_seconds = state->cur_time_sec; 
 
             step();
-            std::cout << "Idx recieved: " << tmp_state->idx << std::endl;
+            std::cout << "Idx recieved: " << state->idx << std::endl;
 
 
             std::cout << "joint 0 name: " << state->value.joint_names[0] << std::endl;
             std::cout << "position value: " << state->value.points[1].positions[0] << std::endl;
+            std::cout << "Vote value: " << out->vote.positions[0] << std::endl;
 
 
             data->value = out->vote;
