@@ -373,6 +373,7 @@ void RobotController::serialize_joint_trajectory(const std::shared_ptr<trajector
 
   // Serialize points
   dest->value.points_length = src->points.size();
+  std::cout << "Num Points = " << src->points.size() << std::endl;
   for (size_t i = 0; i < src->points.size(); ++i) {
     // std::cout << "serialize_joint_trajectory: Inside main for loop" << std::endl;
       const auto& point = src->points[i];
@@ -392,6 +393,7 @@ void RobotController::serialize_joint_trajectory(const std::shared_ptr<trajector
       }
 
       mapped_point->velocities_length = point.velocities.size();
+      std::cout << "After point velo size" << std::endl;
       for (size_t j = 0; j < point.velocities.size(); ++j) {
           std::cout << "serialize_joint_trajectory - velo: " << point.velocities[j] << std::endl;
           mapped_point->velocities[j] = point.velocities[j];
