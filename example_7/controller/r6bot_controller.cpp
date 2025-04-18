@@ -409,8 +409,11 @@ void RobotController::serialize_joint_trajectory(const std::shared_ptr<trajector
       //     mapped_point.effort[j] = point.effort[j];
       // }
 
+
+      std::cout << "About to serialize time_from_start: " << std::endl;
       mapped_point->time_from_start_sec = point.time_from_start.sec;
       mapped_point->time_from_start_nsec = point.time_from_start.nanosec;
+      std::cout << "Serialized time_from_start" << std::endl;
   }
 }
 
