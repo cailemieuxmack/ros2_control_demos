@@ -106,7 +106,9 @@ int main(int argc, char ** argv)
       trajectory_len - loop_rate * (trajectory_len / loop_rate)));  // implicit integer division
   trajectory_msg.points.push_back(trajectory_point_msg);
 
+  std::cout << "Sending trajectory of length: " << trajectory_msg.points.size() << std::endl;
   pub->publish(trajectory_msg);
+  std::cout << "Sending trajectory..." << std::endl;
   while (rclcpp::ok())
   {
   }

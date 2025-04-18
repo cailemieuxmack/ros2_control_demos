@@ -391,7 +391,7 @@ void RobotController::serialize_joint_trajectory(const std::shared_ptr<trajector
           mapped_point->positions[j] = point.positions[j];
           std::cout << "mapped position: " << j << " - " << mapped_point->positions[j] << std::endl;
       }
-
+      
       mapped_point->velocities_length = point.velocities.size();
       std::cout << "After point velo size" << std::endl;
       for (size_t j = 0; j < point.velocities.size(); ++j) {
