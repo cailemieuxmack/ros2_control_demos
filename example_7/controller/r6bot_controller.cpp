@@ -253,11 +253,11 @@ controller_interface::return_type RobotController::update(const rclcpp::Time & t
 
     for (size_t i = 0; i < joint_position_command_interface_.size(); i++)
     {
-      joint_position_command_interface_[i].get().set_value(data0->positions[i]);
+      joint_position_command_interface_[i].get().set_value(data0->value.positions[i]);
     }
     for (size_t i = 0; i < joint_velocity_command_interface_.size(); i++)
     {
-      joint_velocity_command_interface_[i].get().set_value(data0->velocities[i]);
+      joint_velocity_command_interface_[i].get().set_value(data0->value.velocities[i]);
     }
 
     // std::cout << "end" << std::endl;
