@@ -250,19 +250,29 @@ controller_interface::return_type RobotController::update(const rclcpp::Time & t
       // did not vote in time...
     }
 
-    // std::cout << "end" << std::endl;
-    // END DEBUG
 
-
-    interpolate_trajectory_point(*trajectory_msg_, time - start_time_, point_interp_);
     for (size_t i = 0; i < joint_position_command_interface_.size(); i++)
     {
-      joint_position_command_interface_[i].get().set_value(point_interp_.positions[i]);
+      joint_position_command_interface_[i].get().set_value(data0->positions[i]);
     }
     for (size_t i = 0; i < joint_velocity_command_interface_.size(); i++)
     {
-      joint_velocity_command_interface_[i].get().set_value(point_interp_.velocities[i]);
+      joint_velocity_command_interface_[i].get().set_value(data0->velocities[i]);
     }
+
+    // std::cout << "end" << std::endl;
+    // END DEBUG
+
+    // SAVING FOR POSTERITY....
+    // interpolate_trajectory_point(*trajectory_msg_, time - start_time_, point_interp_);
+    // for (size_t i = 0; i < joint_position_command_interface_.size(); i++)
+    // {
+    //   joint_position_command_interface_[i].get().set_value(point_interp_.positions[i]);
+    // }
+    // for (size_t i = 0; i < joint_velocity_command_interface_.size(); i++)
+    // {
+    //   joint_velocity_command_interface_[i].get().set_value(point_interp_.velocities[i]);
+    // }
   }
 
   return controller_interface::return_type::OK;
