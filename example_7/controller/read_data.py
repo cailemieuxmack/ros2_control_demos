@@ -32,6 +32,7 @@ with open('_data0', 'r+b') as f:
     mm = mmap.mmap(f.fileno(), 0)
 
     while True:
+        mm.seek(0)
         # Read a Vote from the memory-mapped file
         vote_data = mm.read(vote_size)
         print(len(vote_data))
