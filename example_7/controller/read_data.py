@@ -34,6 +34,7 @@ with open('_data0', 'r+b') as f:
     while True:
         # Read a Vote from the memory-mapped file
         vote_data = mm.read(vote_size)
+        print(len(vote_data))
         vote = struct.unpack(vote_format, vote_data)
 
         # Extract the idx and MappedJointTrajectoryPoint value
