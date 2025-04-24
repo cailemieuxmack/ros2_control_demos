@@ -339,7 +339,10 @@ if __name__ == "__main__":
     #print(trust_scores)
     with open("_data0", "rb") as d0, open("_data1", "rb") as d1, open("_data2", "rb") as d2, open("_actuation", "w+b") as a:
             #a.write(b"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-            a.write(bytes(16))
+            a.seek(0)
+            a.write(b'\x00' * vote_size)
+            a.flush()
+            # a.write(bytes(16))
             a.seek(0)
             d0.seek(0)
             d1.seek(0)
