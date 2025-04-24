@@ -304,21 +304,6 @@ void RobotController::setup_mapped_mem() {
   }
   printf("%p\n", state_vote);
 
-  // // open or create the file with the proper permissions
-  // fd1 = open("_actuation", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
-  // // init the size of the file
-  // lseek (fd1, sizeof(Vote), SEEK_SET); 
-  // write (fd1, "", 1); 
-  // lseek (fd1, 0, SEEK_SET);
-
-  // // map the file into memory
-  // actuation = mmap(NULL, sizeof(Vote), PROT_WRITE, MAP_SHARED, fd1, 0);
-  // close(fd1);
-  // if (actuation == -1){
-  //     printf("error: %s\n", strerror(errno));
-  //     exit(1);
-  // }
-  // printf("%p\n", actuation);
 
   fd1 = open("_data0", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
   // init the size of the file
@@ -335,13 +320,45 @@ void RobotController::setup_mapped_mem() {
   }
 
 
+  fd2 = open("_data1", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+  // init the size of the file
+  lseek (fd2, sizeof(Vote), SEEK_SET); 
+  write (fd2, "", 1); 
+  lseek (fd2, 0, SEEK_SET);
+
+  // map the file into memory
+  data1 = static_cast<Vote*>(mmap(NULL, sizeof(Vote), PROT_WRITE, MAP_SHARED, fd2, 0));
+  close(fd2);
+  if (data1 == MAP_FAILED){
+      printf("error: %s\n", strerror(errno));
+      exit(1);
+  }
+
+
+
+
+  fd3 = open("_data2", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+  // init the size of the file
+  lseek (fd3, sizeof(Vote), SEEK_SET); 
+  write (fd3, "", 1); 
+  lseek (fd3, 0, SEEK_SET);
+
+  // map the file into memory
+  data2 = static_cast<Vote*>(mmap(NULL, sizeof(Vote), PROT_WRITE, MAP_SHARED, fd3, 0));
+  close(fd3);
+  if (data2 == MAP_FAILED){
+      printf("error: %s\n", strerror(errno));
+      exit(1);
+  }
+
+
 
 
   fd4 = open("_actuation", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
   // init the size of the file
-  lseek (fd1, sizeof(Vote), SEEK_SET); 
-  write (fd1, "", 1); 
-  lseek (fd1, 0, SEEK_SET);
+  lseek (fd4, sizeof(Vote), SEEK_SET); 
+  write (fd4, "", 1); 
+  lseek (fd4, 0, SEEK_SET);
 
   // map the file into memory
   actuation = static_cast<Vote*>(mmap(NULL, sizeof(Vote), PROT_WRITE, MAP_SHARED, fd4, 0));
@@ -369,17 +386,17 @@ void RobotController::setup_mapped_mem() {
   // remove("results.csv");
   // fd2 = open("results.csv", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
 
-  tmp_vote = static_cast<Vote*>(malloc(sizeof(Vote)));
-  tmp_state = static_cast<State_vote*>(malloc(sizeof(State_vote)));
+  // tmp_vote = static_cast<Vote*>(malloc(sizeof(Vote)));
+  // tmp_state = static_cast<State_vote*>(malloc(sizeof(State_vote)));
 
-  // Do I have to init the tmp_state too?
-  tmp_vote->idx = 0; //.store(0);
-  // tmp_vote->values[0] = 1.0; //.store(1.0);
+  // // Do I have to init the tmp_state too?
+  // tmp_vote->idx = 0; //.store(0);
+  // // tmp_vote->values[0] = 1.0; //.store(1.0);
 
-  tmp_state->idx = 0; //.store(0);
-  // tmp_vote->values[0] = 1.0; //.store(1.0);
+  // tmp_state->idx = 0; //.store(0);
+  // // tmp_vote->values[0] = 1.0; //.store(1.0);
 
-  have_actuation = false;
+  // have_actuation = false;
 
 }
 

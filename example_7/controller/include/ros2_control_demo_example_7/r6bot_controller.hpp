@@ -127,12 +127,17 @@ protected:
   int fd0;
   State_vote* state_vote;
   int fd1;
+  int fd2;
+  int fd3;
+  int fd4;
   Vote* actuation;
   int myIdx;
   // Vote *tmp_vote;
   // State_vote *tmp_state;
-  bool have_actuation;
+  // bool have_actuation;
   Vote* data0;
+  Vote* data1;
+  Vote* data2;
 
 
   std::vector<std::string> joint_names_;
