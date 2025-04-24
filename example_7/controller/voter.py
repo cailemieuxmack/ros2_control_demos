@@ -43,7 +43,7 @@ myIdx = 0
 # Define A and trust_scores globally
 A = [0,0,0]  
 trust_scores = [0.75] * len(A)
-trust_scores[0] = 0.4
+# trust_scores[0] = 0.4
 active_controllers =  [True] * len(A)
 #controller_paths = [f'c{i}/controller.c' for i in range(len(A))]
 
