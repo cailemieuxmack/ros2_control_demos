@@ -209,7 +209,7 @@ def vote(A, epsilon):
         print("There are no subdivisions")
         return 0
 
-def driver(data0, actuation):
+def driver(data0, data1, data2, actuation):
     global myIdx 
     global A, trust_scores  # Indicate that we're using the global variables
     #A = modify_voter_positions(A)  # Update A with modified positions
@@ -237,7 +237,7 @@ def driver(data0, actuation):
             # Save the trajectory point for later
             trajectory_points[0] = mapped_joint_trajectory_point
 
-            A[0] = positions + velocities
+            A[0] = positions[0:6] + velocities[0:6]
         else:
             A[0] = None
     except struct.error:
@@ -266,7 +266,7 @@ def driver(data0, actuation):
             # Save the trajectory point for later
             trajectory_points[1] = mapped_joint_trajectory_point
 
-            A[1] = positions + velocities
+            A[1] = positions[0:6] + velocities[0:6]
         else:
             A[1] = None
     except struct.error:
@@ -296,7 +296,7 @@ def driver(data0, actuation):
             # Save the trajectory point for later
             trajectory_points[2] = mapped_joint_trajectory_point
 
-            A[2] = positions + velocities
+            A[2] = positions[0:6] + velocities[0:6]
         else:
             A[2] = None
     except struct.error:
@@ -353,7 +353,7 @@ if __name__ == "__main__":
             # print(actuation)
             
             # Start timer
-            t = RepeatTimer(0.05, driver, [data0, actuation])
+            t = RepeatTimer(0.05, driver, [data0, data1, data2, actuation])
             t.start()
 
     # index of what vote we are on, track which vote indexes it got wrong - to know which ones are test cases, write to a file
