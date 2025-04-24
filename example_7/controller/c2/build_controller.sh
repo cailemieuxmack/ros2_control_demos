@@ -1,5 +1,6 @@
 #! /bin/bash
-# gcc -c -o controller.o controller.c
-# g++ -c -o controller_main.o controller_main.cpp
-# g++ -o tmp0 controller.o controller_main.o
-echo "built controller 2"
+dir=$1
+
+gcc -c -o $dir/c2/controller.o $dir/c2/controller.c
+g++ -c -o $dir/c2/controller_main.o $dir/c2/controller_main.cpp
+g++ -o $dir/tmp2 $dir/c2/controller.o $dir/c2/controller_main.o

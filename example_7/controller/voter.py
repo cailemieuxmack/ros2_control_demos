@@ -6,9 +6,37 @@ import threading
 import subprocess
 import os
 import glob
+import numpy as np
+from numpy.linalg import norm
+
 #import time
 
-num_voters = 1
+# Define the format string for MappedJointTrajectoryPoint
+mapped_joint_trajectory_point_format = (
+    'Q' +         # positions_length (size_t)
+    '100d' +      # positions (100 doubles)
+    'Q' +         # velocities_length (size_t)
+    '100d' +      # velocities (100 doubles)
+    'Q' +         # accelerations_length (size_t)
+    '100d' +      # accelerations (100 doubles)
+    'Q' +         # effort_length (size_t)
+    '100d' +      # effort (100 doubles)
+    'i' +         # time_from_start_sec (int32_t)
+    'I'           # time_from_start_nsec (uint32_t)
+)
+
+# Calculate the size of MappedJointTrajectoryPoint
+mapped_joint_trajectory_point_size = struct.calcsize(mapped_joint_trajectory_point_format)
+
+# Define the format string for Vote
+vote_format = (
+    'i' +         # idx (int)
+    mapped_joint_trajectory_point_format  # value (MappedJointTrajectoryPoint)
+)
+
+# Calculate the size of Vote
+vote_size = struct.calcsize(vote_format)
+
 
 myIdx = 0
 
@@ -19,6 +47,25 @@ trust_scores[0] = 0.4
 active_controllers =  [True] * len(A)
 #controller_paths = [f'c{i}/controller.c' for i in range(len(A))]
 
+trajectory_points = []
+leader = None
+
+def cosine_similarity(vec1, vec2):
+  """
+  Calculates the cosine similarity between two vectors.
+
+  Args:
+    vec1 (list or numpy.ndarray): The first vector.
+    vec2 (list or numpy.ndarray): The second vector.
+
+  Returns:
+    float: The cosine similarity between the two vectors.
+  """
+  vec1 = np.array(vec1)
+  vec2 = np.array(vec2)
+  return np.dot(vec1, vec2) / (norm(vec1) * norm(vec2))
+
+
 class RepeatTimer(Timer):
     def run(self):
         while not self.finished.wait(self.interval):
@@ -28,20 +75,21 @@ def modify_voter_positions(A):
     # Modify each position in A by adding a random value between -1 and 1
     return [a + random.uniform(-1, 1) for a in A]
 
-def update_trust_scores(votes, accepted_votes, accepted_value):
+def update_trust_scores(A, accepted_votes):
     # Placeholder for logic to update trust scores
     # Update 'scores' based on 'some_logic'
+
     global trust_scores, active_controllers
-    for subdiv in votes:
-        for idx, vote in subdiv:
-            if active_controllers[idx]:
-                deviation = abs(vote - accepted_value)
-                if (idx,vote) in accepted_votes:
-                    trust_scores[idx] = min(trust_scores[idx] + 0.5 * ((1 - trust_scores[idx]) / (1 + deviation)), 1)
-                else:
-                    # take off at most 0.1, scaled by how wrong it is
-                    trust_scores[idx] = max(trust_scores[idx] - deviation / 100, 0)
-                    write_missed(idx)
+    for (idx,vote) in enumerate(A):
+        # if active_controllers[idx]:
+            # deviation = abs(vote - accepted_value)
+        if (idx,vote) in accepted_votes:
+            trust_scores[idx] = min(trust_scores[idx] + 0.03, 1.0) #= min(trust_scores[idx] + 0.5 * ((1 - trust_scores[idx]) / (1 + deviation)), 1)
+        else:
+            # take off at most 0.1, scaled by how wrong it is
+            trust_scores[idx] = max(trust_scores[idx] - 0.08, 0.0) #= max(trust_scores[idx] - deviation / 100, 0)
+            write_missed(idx)
+
 
 def write_missed(idx):
     with open(f'missed_{idx}.txt', 'a') as file:
@@ -107,7 +155,7 @@ def vote(A, epsilon):
     # Iterate over each output in A
     for idx, x in enumerate(A):
         if active_controllers[idx]:
-            if type(x) is not float:
+            if x is None:
                 # FIXME this is just for testing and debugging
                 # DEBUG should actually handle missed votes better than this
                 if(myIdx > 10):
@@ -120,7 +168,7 @@ def vote(A, epsilon):
             # Check each existing subdivision to see if x fits into it
             for subdivision in subdivisions:
                 # If x is within epsilon of any element in the subdivision, add x to this subdivision
-                if any(abs(x - y[1]) <= epsilon for y in subdivision):
+                if any(cosine_similarity(x, y[1]) <= epsilon for y in subdivision):
                     subdivision.append((idx,x))
                     added_to_subdivision = True
                     break
@@ -134,14 +182,23 @@ def vote(A, epsilon):
     if len(subdivisions) > 0:
         largest_subdivision = max(subdivisions, key=len)
 
+        accepted_idx = None
+        subdiv_idx_list = [x[0] for x in largest_subdivision]
+
+        if leader in subdiv_idx_list:
+            accepted_idx = leader
+        else:
+            accepted_idx = random.choice(subdiv_idx_list)
+            leader = accepted_idx
+        # FIXME no averages!
         # Calculate and return the average of the largest subdivision
-        average_value = sum(y[1] for y in largest_subdivision) / len(largest_subdivision)
+        # average_value = sum(y[1] for y in largest_subdivision) / len(largest_subdivision)
         
         accepted_votes = set(largest_subdivision)
-        update_trust_scores(subdivisions, accepted_votes, average_value)
+        update_trust_scores(A, accepted_votes)
         
         # print('avg val', average_value)
-        return average_value
+        return accepted_idx
     else:
         print("There are no subdivisions")
         return 0
@@ -152,16 +209,29 @@ def driver(data0, actuation):
     #A = modify_voter_positions(A)  # Update A with modified positions
     try:
         data0.seek(0)
-        (vIdx, v0)  = struct.unpack("id",data0.read(16))
-        #A = struct.unpack("d",data0.read(8))[0]
-        #print(d.read())
-        #print(A)
+        myVote  = struct.unpack(vote_format,data0.read(vote_size))
+         # Extract the idx and MappedJointTrajectoryPoint value
+        vidx = myVote[0]
 
-        if(vIdx >= myIdx):
-            A[0] = v0
-            print(vIdx,":", A)
-            #actuation.write(struct.pack("id", myIdx, A))
-            #actuation.write(struct.pack("d", A))
+        if(vidx >= myIdx):
+            mapped_joint_trajectory_point = myVote[1:]
+
+            # Extract positions and velocities arrays
+            positions_length = mapped_joint_trajectory_point[0]
+            positions = mapped_joint_trajectory_point[1:101]  # 100 doubles for positions
+            velocities_length = mapped_joint_trajectory_point[101]
+            velocities = mapped_joint_trajectory_point[102:202]  # 100 doubles for velocities
+
+            # print(f"Index: {vidx}")
+            # print(f"Positions Length: {positions_length}")
+            # print(f"Positions: {positions}")
+            # print(f"Velocities Length: {velocities_length}")
+            # print(f"Velocities: {velocities}")
+
+            # Save the trajectory point for later
+            trajectory_points[0] = mapped_joint_trajectory_point
+
+            A[0] = positions + velocities
         else:
             A[0] = None
     except struct.error:
@@ -169,16 +239,28 @@ def driver(data0, actuation):
 
     try:
         data1.seek(0)
-        (vIdx, v1)  = struct.unpack("id",data1.read(16))
-        #A = struct.unpack("d",data0.read(8))[0]
-        #print(d.read())
-        #print(A)
+        myVote  = struct.unpack(vote_format,data1.read(vote_size))
+         # Extract the idx and MappedJointTrajectoryPoint value
+        vidx = myVote[0]
 
-        if(vIdx >= myIdx):
-            A[1] = v1
-            #print(vIdx,":", A)
-            #actuation.write(struct.pack("id", myIdx, A))
-            #actuation.write(struct.pack("d", A))
+        if(vidx >= myIdx):
+            mapped_joint_trajectory_point = myVote[1:]
+
+            # Extract positions and velocities arrays
+            positions_length = mapped_joint_trajectory_point[0]
+            positions = mapped_joint_trajectory_point[1:101]  # 100 doubles for positions
+            velocities_length = mapped_joint_trajectory_point[101]
+            velocities = mapped_joint_trajectory_point[102:202]  # 100 doubles for velocities
+
+            # print(f"Index: {vidx}")
+            # print(f"Positions Length: {positions_length}")
+            # print(f"Positions: {positions}")
+            # print(f"Velocities Length: {velocities_length}")
+            # print(f"Velocities: {velocities}")
+            # Save the trajectory point for later
+            trajectory_points[1] = mapped_joint_trajectory_point
+
+            A[1] = positions + velocities
         else:
             A[1] = None
     except struct.error:
@@ -186,16 +268,29 @@ def driver(data0, actuation):
 
     try:
         data2.seek(0)
-        (vIdx, v2)  = struct.unpack("id",data2.read(16))
-        #A = struct.unpack("d",data0.read(8))[0]
-        #print(d.read())
-        #print(A)
+        myVote  = struct.unpack(vote_format,data2.read(vote_size))
+         # Extract the idx and MappedJointTrajectoryPoint value
+        vidx = myVote[0]
 
-        if(vIdx >= myIdx):
-            A[2] = v2
-            #print(vIdx,":", A)
-            #actuation.write(struct.pack("id", myIdx, A))
-            #actuation.write(struct.pack("d", A))
+        if(vidx >= myIdx):
+            mapped_joint_trajectory_point = myVote[1:]
+
+            # Extract positions and velocities arrays
+            positions_length = mapped_joint_trajectory_point[0]
+            positions = mapped_joint_trajectory_point[1:101]  # 100 doubles for positions
+            velocities_length = mapped_joint_trajectory_point[101]
+            velocities = mapped_joint_trajectory_point[102:202]  # 100 doubles for velocities
+
+            # print(f"Index: {vidx}")
+            # print(f"Positions Length: {positions_length}")
+            # print(f"Positions: {positions}")
+            # print(f"Velocities Length: {velocities_length}")
+            # print(f"Velocities: {velocities}")
+
+            # Save the trajectory point for later
+            trajectory_points[2] = mapped_joint_trajectory_point
+
+            A[2] = positions + velocities
         else:
             A[2] = None
     except struct.error:
@@ -220,8 +315,10 @@ def driver(data0, actuation):
     # myIdx = 69
     # output = 69.69
 
+    vote_data_to_write = struct.pack(vote_format, myIdx, *trajectory_points[output])
+
     actuation.seek(0)
-    actuation.write(struct.pack("id", myIdx, output))
+    actuation.write(vote_data_to_write)
     
 
 

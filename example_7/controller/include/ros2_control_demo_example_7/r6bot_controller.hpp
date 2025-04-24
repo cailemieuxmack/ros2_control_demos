@@ -129,8 +129,8 @@ protected:
   int fd1;
   Vote* actuation;
   int myIdx;
-  Vote *tmp_vote;
-  State_vote *tmp_state;
+  // Vote *tmp_vote;
+  // State_vote *tmp_state;
   bool have_actuation;
   Vote* data0;
 

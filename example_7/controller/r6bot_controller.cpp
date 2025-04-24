@@ -334,6 +334,23 @@ void RobotController::setup_mapped_mem() {
       exit(1);
   }
 
+
+
+
+  fd4 = open("_actuation", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+  // init the size of the file
+  lseek (fd1, sizeof(Vote), SEEK_SET); 
+  write (fd1, "", 1); 
+  lseek (fd1, 0, SEEK_SET);
+
+  // map the file into memory
+  actuation = static_cast<Vote*>(mmap(NULL, sizeof(Vote), PROT_WRITE, MAP_SHARED, fd4, 0));
+  close(fd4);
+  if (actuation == MAP_FAILED){
+      printf("error: %s\n", strerror(errno));
+      exit(1);
+  }
+
   //printf("vote: %d\n", sizeof(Vote));
 
   // // init the buffers
