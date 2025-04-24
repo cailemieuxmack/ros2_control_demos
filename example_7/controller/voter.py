@@ -148,7 +148,7 @@ def repair_controller(controller_index):
 
 # FMV
 def vote(A, epsilon):
-    global active_controllers
+    global active_controllers, leader
     # Initializes a list to hold subdivisions, each subdivision is a list of outputs
     subdivisions = []
 
