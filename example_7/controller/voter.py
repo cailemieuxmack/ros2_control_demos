@@ -63,6 +63,12 @@ def cosine_similarity(vec1, vec2):
   """
   vec1 = np.array(vec1)
   vec2 = np.array(vec2)
+  norm1 = norm(vec1)
+  norm2 = norm(vec2)
+  # FIXME - tmp fix
+  if norm1 == 0 or norm2 == 0:
+      # one of the vectors is 0 so they are not similar... idk if this is right.. ask kevin
+    return 0
   return np.dot(vec1, vec2) / (norm(vec1) * norm(vec2))
 
 
