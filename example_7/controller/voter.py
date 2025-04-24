@@ -47,7 +47,7 @@ trust_scores[0] = 0.4
 active_controllers =  [True] * len(A)
 #controller_paths = [f'c{i}/controller.c' for i in range(len(A))]
 
-trajectory_points = []
+trajectory_points = [None] * len(A)
 leader = None
 
 def cosine_similarity(vec1, vec2):
