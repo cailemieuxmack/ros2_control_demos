@@ -166,6 +166,7 @@ def vote(A, epsilon):
             if x is None:
                 # FIXME this is just for testing and debugging
                 # DEBUG should actually handle missed votes better than this
+                print(f"controller {idx} missed the vote")
                 if(myIdx > 10):
                     trust_scores[idx] -= 0.1
                     write_missed(idx)
@@ -180,6 +181,8 @@ def vote(A, epsilon):
                     subdivision.append((idx,x))
                     added_to_subdivision = True
                     break
+                else:
+                    print(f"there are no subdivisions to put vote {idx} so it gets its own bin")
             
             # If x does not fit into any existing subdivision, create a new one for x
             if not added_to_subdivision:
