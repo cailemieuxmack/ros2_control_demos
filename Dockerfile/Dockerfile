@@ -25,7 +25,7 @@ RUN cd /home/ros2_ws/src \
 
 RUN cd /home/ros2_ws/ \
   && . /opt/ros/${ROS_DISTRO}/setup.sh \
-  && colcon build --merge-install --symlink-install --packages-skip ros2_control_demo_example_10
+  && colcon build --merge-install --symlink-install
 
 COPY Dockerfile/entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
