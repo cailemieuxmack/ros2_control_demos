@@ -194,7 +194,7 @@ controller_interface::return_type RobotController::update(
     std::cout << "traj_msg exists " << std::endl;
 
     auto cur_time = time - start_time_;
-    state_vote->cur_time_sec = (int32_t) cur_time.seconds();
+    state_vote->cur_time_sec = (int32_t) cur_time.seconds(); // drop the decimals... maybe not the best way top do it...
 
     // DEBUG
     // Pass in the index and state
