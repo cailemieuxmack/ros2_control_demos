@@ -35,7 +35,7 @@
 #include <iostream>
 #include <stdatomic.h>
 #include <stdbool.h>
-// #include <string.h>
+#include <string.h>
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <stdio.h>
