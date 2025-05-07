@@ -44,6 +44,7 @@
 // #include "controller.h"
 #include <stdatomic.h>
 #include <stdbool.h>
+#include <sys/stat.h>
 
 
 using config_type = controller_interface::interface_configuration_type;
@@ -178,8 +179,7 @@ void interpolate_trajectory_point(
   interpolate_point(traj_msg.points[ind], traj_msg.points[ind + 1], point_interp, delta);
 }
 
-controller_interface::return_type RobotController::update(
-  const rclcpp::Time & time, const rclcpp::Duration & /*period*/)
+controller_interface::return_type RobotController::update(const rclcpp::Time & time, const rclcpp::Duration & /*period*/)
 {
   if (new_msg_)
   {
@@ -219,6 +219,15 @@ controller_interface::return_type RobotController::update(
 
     // Sleep so that the controller can run
     rclcpp::sleep_for(std::chrono::nanoseconds(500));
+
+    // Trigger the vote
+    string flag_path = "_flag"
+    int flag = open(flag_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+    close(flag);
+    // busy loop while the vote happens
+    while(exists_test_3(&flag_path)){
+      continue;
+    }
 
     // Get the proposed values
     // tmp_vote->idx = data0->idx; 
@@ -268,6 +277,11 @@ controller_interface::return_type RobotController::update(
   }
 
   return controller_interface::return_type::OK;
+}
+
+inline bool exists_test3 (const std::string& name) {
+  struct stat buffer;   
+  return (stat (name.c_str(), &buffer) == 0); 
 }
 
 controller_interface::CallbackReturn RobotController::on_deactivate(const rclcpp_lifecycle::State &)

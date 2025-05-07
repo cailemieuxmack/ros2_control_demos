@@ -360,9 +360,17 @@ if __name__ == "__main__":
             # print(data0)
             # print(actuation)
             
-            # Start timer
-            t = RepeatTimer(0.05, driver, [data0, data1, data2, actuation])
-            t.start()
+            flag_path = "_flag"
+
+            while True:
+                if os.path.exists(flag_path):
+                    driver(data0, data1, data2, actuation)
+                    os.remove(flag_path)
+
+
+            # # Start timer
+            # t = RepeatTimer(0.05, driver, [data0, data1, data2, actuation])
+            # t.start()
 
     # index of what vote we are on, track which vote indexes it got wrong - to know which ones are test cases, write to a file
     # integrate trust scores
