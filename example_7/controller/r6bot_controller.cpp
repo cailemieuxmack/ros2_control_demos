@@ -194,7 +194,7 @@ controller_interface::return_type RobotController::update(
     std::cout << "traj_msg exists " << std::endl;
 
     auto cur_time = time - start_time_;
-    state_vote->cur_time_sec = cur_time.seconds();
+    state_vote->cur_time_sec = (int32_t) cur_time.seconds();
 
     // DEBUG
     // Pass in the index and state
@@ -294,7 +294,7 @@ void RobotController::setup_mapped_mem() {
       printf("error: %s\n", strerror(errno));
       exit(1);
   }
-  printf("%p\n", state_vote);
+  // printf("%p\n", state_vote);
 
 
   fd1 = open("_data0", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
