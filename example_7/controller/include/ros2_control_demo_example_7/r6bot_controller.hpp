@@ -39,9 +39,55 @@
 
 namespace ros2_control_demo_example_7
 {
+
+//DEBUG
+
+typedef struct {
+  size_t positions_length;
+  double positions[100]; // Assuming a maximum of 100 positions
+
+  size_t velocities_length;
+  double velocities[100]; // Assuming a maximum of 100 velocities
+
+  size_t accelerations_length;
+  double accelerations[100]; // Assuming a maximum of 100 accelerations
+
+  size_t effort_length;
+  double effort[100]; // Assuming a maximum of 100 effort values
+
+  int32_t time_from_start_sec; // seconds part of the duration
+  uint32_t time_from_start_nsec; // nanoseconds part of the duration
+} MappedJointTrajectoryPoint;
+
+struct MappedJointTrajectory {
+    size_t joint_names_length;
+    char joint_names[10][256]; // Assuming a maximum of 10 joint names, each with a maximum length of 256
+
+    size_t points_length;
+    MappedJointTrajectoryPoint points[256]; // Assuming a maximum of 100 points
+};
+
+typedef struct {
+  int idx;
+  MappedJointTrajectoryPoint value; // u, (dx, da) <- not yet
+} Vote;
+
+typedef struct {
+  int idx;
+  MappedJointTrajectory value; // x,a,t temp(dx, da)
+  int32_t cur_time_sec;
+  //uint32_t cur_time_nsec;
+} State_vote;
+
 class RobotController : public controller_interface::ControllerInterface
 {
 public:
+
+  //DEBUG
+  void setup_mapped_mem();
+
+  void serialize_joint_trajectory(const std::shared_ptr<trajectory_msgs::msg::JointTrajectory>& src, State_vote* dest);
+
   RobotController();
 
   controller_interface::InterfaceConfiguration command_interface_configuration() const override;
@@ -63,6 +109,24 @@ public:
     const rclcpp_lifecycle::State & previous_state) override;
 
 protected:
+
+  //DEBUG
+  int fd0;
+  State_vote* state_vote;
+  int fd1;
+  int fd2;
+  int fd3;
+  int fd4;
+  Vote* actuation;
+  int myIdx;
+  // Vote *tmp_vote;
+  // State_vote *tmp_state;
+  // bool have_actuation;
+  Vote* data0;
+  Vote* data1;
+  Vote* data2;
+
+  
   std::vector<std::string> joint_names_;
   std::vector<std::string> command_interface_types_;
   std::vector<std::string> state_interface_types_;
