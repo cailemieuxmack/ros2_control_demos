@@ -225,7 +225,7 @@ controller_interface::return_type RobotController::update(const rclcpp::Time & t
     int flag = open(flag_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
     close(flag);
     // busy loop while the vote happens
-    while(exists_test_3(&flag_path)){
+    while(exists_test_3(flag_path)){
       continue;
     }
 
