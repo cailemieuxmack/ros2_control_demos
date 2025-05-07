@@ -221,11 +221,11 @@ controller_interface::return_type RobotController::update(const rclcpp::Time & t
     rclcpp::sleep_for(std::chrono::nanoseconds(500));
 
     // Trigger the vote
-    string flag_path = "_flag"
+    string flag_path = "_flag";
     int flag = open(flag_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
     close(flag);
     // busy loop while the vote happens
-    while(std::filesystem::exists(flag_path);){
+    while(std::filesystem::exists(flag_path)){
       continue;
     }
 
