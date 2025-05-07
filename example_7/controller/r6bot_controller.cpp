@@ -225,7 +225,7 @@ controller_interface::return_type RobotController::update(const rclcpp::Time & t
     int flag = open(flag_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
     close(flag);
     // busy loop while the vote happens
-    while(exists_test_3(flag_path)){
+    while(std::filesystem::exists(flag_path);){
       continue;
     }
 
@@ -279,10 +279,10 @@ controller_interface::return_type RobotController::update(const rclcpp::Time & t
   return controller_interface::return_type::OK;
 }
 
-inline bool exists_test3 (const std::string& name) {
-  struct stat buffer;   
-  return (stat (name.c_str(), &buffer) == 0); 
-}
+// inline bool RobotController::exists_test3 (const std::string& name) {
+//   struct stat buffer;   
+//   return (stat (name.c_str(), &buffer) == 0); 
+// }
 
 controller_interface::CallbackReturn RobotController::on_deactivate(const rclcpp_lifecycle::State &)
 {

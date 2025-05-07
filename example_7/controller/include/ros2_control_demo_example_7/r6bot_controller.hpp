@@ -84,6 +84,8 @@ class RobotController : public controller_interface::ControllerInterface
 public:
 
   //DEBUG
+  // inline bool exists_test3 (const std::string& name);
+
   void setup_mapped_mem();
 
   void serialize_joint_trajectory(const std::shared_ptr<trajectory_msgs::msg::JointTrajectory>& src, State_vote* dest);
@@ -126,7 +128,7 @@ protected:
   Vote* data1;
   Vote* data2;
 
-  
+
   std::vector<std::string> joint_names_;
   std::vector<std::string> command_interface_types_;
   std::vector<std::string> state_interface_types_;
