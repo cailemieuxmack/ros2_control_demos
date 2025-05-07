@@ -35,7 +35,7 @@
 #include <iostream>
 #include <stdatomic.h>
 #include <stdbool.h>
-#include <string.h>
+#include <string>
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <stdio.h>
@@ -222,7 +222,7 @@ controller_interface::return_type RobotController::update(const rclcpp::Time & t
     rclcpp::sleep_for(std::chrono::nanoseconds(500));
 
     // Trigger the vote
-    string flag_path = "_flag";
+    std::string flag_path = "_flag";
     int flag = open(flag_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
     close(flag);
     // busy loop while the vote happens
