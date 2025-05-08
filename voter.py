@@ -177,15 +177,19 @@ def vote(A, epsilon):
             # Check each existing subdivision to see if x fits into it
             for subdivision in subdivisions:
                 # If x is within epsilon of any element in the subdivision, add x to this subdivision
+                
+                # DEBUG
+                for y in subdivision:
+                    print(f"cosine_similarity of x and y: {cosine_similarity(x, y[1])}")
+
                 if any(cosine_similarity(x, y[1]) <= epsilon for y in subdivision):
                     subdivision.append((idx,x))
                     added_to_subdivision = True
                     break
-                else:
-                    print(f"there are no subdivisions to put vote {idx} so it gets its own bin")
             
             # If x does not fit into any existing subdivision, create a new one for x
             if not added_to_subdivision:
+                
                 subdivisions.append([(idx,x)])
 
     # print('subd', subdivisions)
