@@ -38,7 +38,7 @@ vote_format = (
 vote_size = struct.calcsize(vote_format)
 
 
-myIdx = 0
+myIdx = -1
 
 # Define A and trust_scores globally
 A = [0,0,0]  
