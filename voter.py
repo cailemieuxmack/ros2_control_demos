@@ -50,7 +50,7 @@ active_controllers =  [True] * len(A)
 trajectory_points = [None] * len(A)
 leader = None
 
-def cosine_similarity(vec1, vec2):
+def cosine_distance(vec1, vec2):
   """
   Calculates the cosine similarity between two vectors.
 
@@ -68,8 +68,8 @@ def cosine_similarity(vec1, vec2):
   # FIXME - tmp fix
   if norm1 == 0 or norm2 == 0:
       # one of the vectors is 0 so they are not similar... idk if this is right.. ask kevin
-    return 0
-  return np.dot(vec1, vec2) / (norm(vec1) * norm(vec2))
+    return 1
+  return 1 - (np.dot(vec1, vec2) / (norm(vec1) * norm(vec2)))
 
 
 class RepeatTimer(Timer):
@@ -177,12 +177,12 @@ def vote(A, epsilon):
             # Check each existing subdivision to see if x fits into it
             for subdivision in subdivisions:
                 # If x is within epsilon of any element in the subdivision, add x to this subdivision
-                
+
                 # DEBUG
                 for y in subdivision:
-                    print(f"cosine_similarity of x and y: {cosine_similarity(x, y[1])}")
+                    print(f"cosine distance of x and y: {cosine_distance(x, y[1])}")
 
-                if any(cosine_similarity(x, y[1]) <= epsilon for y in subdivision):
+                if any(cosine_distance(x, y[1]) <= epsilon for y in subdivision):
                     subdivision.append((idx,x))
                     added_to_subdivision = True
                     break
