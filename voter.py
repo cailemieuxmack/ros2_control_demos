@@ -218,11 +218,14 @@ def driver(data0, data1, data2, actuation):
     global myIdx 
     global A, trust_scores  # Indicate that we're using the global variables
     #A = modify_voter_positions(A)  # Update A with modified positions
+    print(f"My Index Is: {myIdx}")
     try:
         data0.seek(0)
         myVote  = struct.unpack(vote_format,data0.read(vote_size))
          # Extract the idx and MappedJointTrajectoryPoint value
         vidx = myVote[0]
+
+        print(f"Controller 0 index: {vidx}")
 
         if(vidx >= myIdx):
             mapped_joint_trajectory_point = myVote[1:]
@@ -254,6 +257,8 @@ def driver(data0, data1, data2, actuation):
          # Extract the idx and MappedJointTrajectoryPoint value
         vidx = myVote[0]
 
+        print(f"Controller 1 index: {vidx}")
+
         if(vidx >= myIdx):
             mapped_joint_trajectory_point = myVote[1:]
 
@@ -275,13 +280,15 @@ def driver(data0, data1, data2, actuation):
         else:
             A[1] = None
     except struct.error:
-        print("could not read file 0")
+        print("could not read file 1")
 
     try:
         data2.seek(0)
         myVote  = struct.unpack(vote_format,data2.read(vote_size))
          # Extract the idx and MappedJointTrajectoryPoint value
         vidx = myVote[0]
+
+        print(f"Controller 2 index: {vidx}")
 
         if(vidx >= myIdx):
             mapped_joint_trajectory_point = myVote[1:]
@@ -305,7 +312,7 @@ def driver(data0, data1, data2, actuation):
         else:
             A[2] = None
     except struct.error:
-        print("could not read file 0")
+        print("could not read file 2")
 
     epsilon = 0.5 # slightly larger than noise
     
@@ -364,6 +371,7 @@ if __name__ == "__main__":
 
             while True:
                 if os.path.exists(flag_path):
+                    print("New vote cycle beginning...")
                     driver(data0, data1, data2, actuation)
                     os.remove(flag_path)
 
