@@ -245,12 +245,14 @@ controller_interface::return_type RobotController::update(const rclcpp::Time & t
       // std::cout << sizeof(trajectory_msg_) << std::endl;
 
       // update index index
-      myIdx = data0->idx; //.load();
-      myIdx++;
+      // myIdx = data0->idx; //.load();
+      // myIdx++;
     } else {
       std::cout << "did not get a vote from controller 0" << std::endl;
       // did not vote in time...
     }
+
+    myIdx++;
 
 
     for (size_t i = 0; i < joint_position_command_interface_.size(); i++)
