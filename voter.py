@@ -37,8 +37,7 @@ vote_format = (
 # Calculate the size of Vote
 vote_size = struct.calcsize(vote_format)
 
-
-myIdx = 0
+myIdx = -1
 
 # Define A and trust_scores globally
 A = [0,0,0]  
@@ -333,7 +332,9 @@ def driver(data0, data1, data2, actuation):
     threshold = 0.5
     check_trust(trust_scores, threshold)
     # myIdx = 69
-    # output = 69.69
+    # output = 69.69 
+    
+    myIdx += 1
 
     vote_data_to_write = struct.pack(vote_format, myIdx, *trajectory_points[output])
 
@@ -341,9 +342,9 @@ def driver(data0, data1, data2, actuation):
     actuation.write(vote_data_to_write)
 
     # copy the state and actuation to the results
-    os.system(f"./copy_results {myIdx}")
+    os.system(f"./copy_results.sh {myIdx}")
 
-    myIdx += 1
+    
     
 
 
