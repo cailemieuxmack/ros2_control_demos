@@ -230,7 +230,7 @@ def driver(data0, data1, data2, actuation):
 
         print(f"Controller 0 index: {vidx}")
 
-        if(vidx >= myIdx):
+        if(vidx > myIdx):
             mapped_joint_trajectory_point = myVote[1:]
 
             # Extract positions and velocities arrays
@@ -262,7 +262,7 @@ def driver(data0, data1, data2, actuation):
 
         print(f"Controller 1 index: {vidx}")
 
-        if(vidx >= myIdx):
+        if(vidx > myIdx):
             mapped_joint_trajectory_point = myVote[1:]
 
             # Extract positions and velocities arrays
@@ -293,7 +293,7 @@ def driver(data0, data1, data2, actuation):
 
         print(f"Controller 2 index: {vidx}")
 
-        if(vidx >= myIdx):
+        if(vidx > myIdx):
             mapped_joint_trajectory_point = myVote[1:]
 
             # Extract positions and velocities arrays
