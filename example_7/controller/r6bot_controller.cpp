@@ -236,19 +236,19 @@ controller_interface::return_type RobotController::update(const rclcpp::Time & t
     //printf("idx: %d   value: %f\n", tmp_vote->idx, tmp_vote->values[0]);
     //printf("read: %d,   %f\n", tmp_vote->idx, tmp_vote->values[0]);
 
-    std::cout << "idx recieved: " << data0->idx << " - myIDX: " << myIdx <<std::endl;
+    std::cout << "idx recieved: " << actuation->idx << " - myIDX: " << myIdx <<std::endl;
 
     //if (tmp_vote->idx.load() >= myIdx) {
-    if (data0->idx >= myIdx) {
+    if (actuation->idx >= myIdx) {
       // We have a new message
-      std::cout << "got a vote from controller 0" << std::endl;
+      std::cout << "got an actuation" << std::endl;
       // std::cout << sizeof(trajectory_msg_) << std::endl;
 
       // update index index
       // myIdx = data0->idx; //.load();
       // myIdx++;
     } else {
-      std::cout << "did not get a vote from controller 0" << std::endl;
+      std::cout << "did not get an actuation from the voter" << std::endl;
       // did not vote in time...
     }
 
@@ -257,11 +257,11 @@ controller_interface::return_type RobotController::update(const rclcpp::Time & t
 
     for (size_t i = 0; i < joint_position_command_interface_.size(); i++)
     {
-      joint_position_command_interface_[i].get().set_value(data0->value.positions[i]);
+      joint_position_command_interface_[i].get().set_value(actuation->value.positions[i]);
     }
     for (size_t i = 0; i < joint_velocity_command_interface_.size(); i++)
     {
-      joint_velocity_command_interface_[i].get().set_value(data0->value.velocities[i]);
+      joint_velocity_command_interface_[i].get().set_value(actuation->value.velocities[i]);
     }
 
     // END DEBUG
