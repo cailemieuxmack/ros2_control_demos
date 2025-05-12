@@ -18,5 +18,5 @@ with open("missed_" + bad + ".txt") as missed:
         if int(idx) >= MIN_IDX:
             miss.append(idx)
 
-    miss = [x[:-1] for x in miss_lines]
+    # miss = [x[:-1] for x in miss_lines]
     print("controller missed: " + str(miss))
