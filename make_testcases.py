@@ -35,15 +35,15 @@ miss_cases = random.sample(miss, 2)
 
 print(miss_cases)
 
-# for i in miss_cases:
-#     os.system(f"cp results/state_{i} {REPAIR_PATH}/docker/test/n{i}")
-#     os.system(f"cp results/actuation_{i} {REPAIR_PATH}/docker/test/output.n{i}")
+for i in miss_cases:
+    os.system(f"cp results/state_{i} {REPAIR_PATH}/docker/test/n{i}")
+    os.system(f"cp results/actuation_{i} {REPAIR_PATH}/docker/test/output.n{i}")
 
 pass_cases = random.sample(passes, 2)
 
 print(pass_cases)
 
-# for i in pass_cases:
-#     os.system(f"cp results/state_{i} {REPAIR_PATH}/docker/test/p{i}")
-#     os.system(f"cp results/actuation_{i} {REPAIR_PATH}/docker/test/output.p{i}")
+for i in pass_cases:
+    os.system(f"cp results/state_{i} {REPAIR_PATH}/docker/test/p{i}")
+    os.system(f"cp results/actuation_{i} {REPAIR_PATH}/docker/test/output.p{i}")
 
