@@ -20,4 +20,4 @@ make
 cd /isis/home/cailm/Research/git/Darjeeling
 
 # IDK if this will work... 
-pipenv run $($here_dir)/repair_helper.sh $bad_num $here_dir
+pipenv run $here_dir/repair_helper.sh $bad_num $here_dir
