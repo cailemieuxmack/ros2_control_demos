@@ -35,5 +35,5 @@ COPY controller.h /experiment/
 # COPY controller_sanity.c /experiment/source/
 COPY test.sh /experiment
 COPY check_distance.py /experiment
-COPY test /experiment/test
+COPY test/ /experiment/
 RUN sudo chown -R docker /experiment
