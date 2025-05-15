@@ -7,7 +7,7 @@ threads: 16
 # location of the source code for the program within that image,
 # and instructions for building and testing it.
 program:
-  image: toy_example:vulnerable  # *** This needs to be replaced
+  image: ros_repair:vulnerable  # *** This needs to be replaced
   language: c
   source-directory: /experiment/source
   build-instructions:

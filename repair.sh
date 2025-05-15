@@ -17,6 +17,7 @@ cp repair.yml repair_$bad_num/
 make
 
 # FIXME: Update your path to Darjeeling
-cd /home/jazbo/Vanderbilt/Research/git/Darjeeling
+cd /isis/home/cailm/Research/git/Darjeeling
 
-pipenv run /bin/bash /home/jazbo/Vanderbilt/Research/N-Version_APR/inverted_pendulum/repair_helper.sh $bad_num $here_dir
+# IDK if this will work... 
+pipenv run $($here_dir)/repair_helper.sh $bad_num $here_dir
