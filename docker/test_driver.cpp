@@ -102,7 +102,7 @@ int main() {
     // std::cout << internal << std::endl;
 
     // open or create the file with the proper permissions
-    int fd2 = open("_data2", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+    int fd2 = open("_data", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
     // init the size of the file
     lseek(fd2, sizeof(Vote), SEEK_SET);
     write(fd2, "", 1);

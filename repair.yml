@@ -13,9 +13,13 @@ program:
   build-instructions:
     time-limit: 10
     steps:
-      - gcc controller_vulnerable.c controller.h ../lib/test_driver.c -o controller -lm
+      - gcc -c -o controller.o controller_vulnerable.c
+      - g++ -c -o controller_main.o ../lib/test_driver.cpp
+      - g++ -o controller controller.o controller_main.o
     steps-for-coverage:
-      - gcc controller_vulnerable.c controller.h ../lib/test_driver.c -o controller -lm --coverage
+       - gcc -c -o controller.o controller_vulnerable.c --coverage
+       - g++ -c -o controller_main.o ../lib/test_driver.cpp
+       - g++ -o controller controller.o controller_main.o
   tests:
     type: genprog
     workdir: /experiment

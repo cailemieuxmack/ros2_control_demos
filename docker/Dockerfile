@@ -20,6 +20,7 @@ USER docker
 RUN sudo apt-get update \
  && sudo apt-get install -y --no-install-recommends \
       gcc \
+      g++ \
       gcovr \
       libc6-dev \
       bc \
@@ -28,10 +29,11 @@ RUN sudo apt-get update \
  && sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /experiment
-COPY test_driver.c /experiment/lib/
-COPY controller_vulnerable.c /experiment/source/
-COPY controller.h /experiment/source/
+COPY test_driver.cpp /experiment/lib/
+COPY controller.c /experiment/source/
+COPY controller.h /experiment/
 # COPY controller_sanity.c /experiment/source/
 COPY test.sh /experiment
+COPY check_distance.py /experiment
 COPY test /experiment/test
 RUN sudo chown -R docker /experiment
