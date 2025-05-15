@@ -4,7 +4,7 @@ import random
 import os
 
 # LINE_LEN = 7
-REPAIR_PATH = "."
+REPAIR_PATH = "./docker/test"
 MIN_IDX = 10
 
 # pass in the controller number

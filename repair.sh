@@ -7,7 +7,7 @@ max_idx=$2
 
 here_dir=$(pwd)
 
-cp c$bad_num/controller.c docker/controller.c
+cp example_7/controller/c$bad_num/controller.c docker/controller.c
 
 python3 make_testcases.py $1 $max_idx
 
