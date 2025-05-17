@@ -25,6 +25,7 @@ RUN sudo apt-get update \
       libc6-dev \
       bc \
       gdb \
+      python3 \
  && sudo apt-get clean \
  && sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
