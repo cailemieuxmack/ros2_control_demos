@@ -27,11 +27,13 @@ RUN sudo apt-get update \
       gdb \
       python3 \
       python3-pip \
+      python3-setuptools \
  && sudo apt-get clean \
  && sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# install numpy
-RUN pip3 install numpy
+# upgrade pip and install numpy
+RUN pip3 install --upgrade pip \
+ && pip3 install numpy
 
 WORKDIR /experiment
 COPY test_driver.cpp /experiment/lib/
