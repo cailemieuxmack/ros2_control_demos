@@ -5,7 +5,7 @@
 #include <iostream>
 #include <errno.h>
 #include <string.h>
-#include <atomic>
+// #include <atomic>
 #include <cstdint>
 
 extern "C" {
