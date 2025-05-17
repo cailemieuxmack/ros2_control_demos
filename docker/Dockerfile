@@ -31,9 +31,9 @@ RUN sudo apt-get update \
  && sudo apt-get clean \
  && sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# upgrade pip and install numpy
-RUN sudo python3 -m pip install --upgrade pip \
- && pip3 install numpy
+# upgrade pip to a compatible version and install numpy
+RUN python3 -m pip install --user --upgrade pip==20.3.4 \
+ && python3 -m pip install --user numpy
 
 WORKDIR /experiment
 COPY test_driver.cpp /experiment/lib/
