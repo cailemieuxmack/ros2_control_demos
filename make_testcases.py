@@ -6,6 +6,8 @@ import os
 # LINE_LEN = 7
 REPAIR_PATH = "."
 MIN_IDX = 10
+NUM_PASS = 2
+NUM_FAIL = 2
 
 # pass in the controller number
 bad = sys.argv[1]
@@ -31,7 +33,7 @@ passes = [x for x in potential_passes if x not in miss]
 print(f"passes: {passes}")
 
 
-miss_cases = random.sample(miss, 2)
+miss_cases = random.sample(miss, NUM_FAIL)
 
 print(miss_cases)
 
@@ -39,7 +41,7 @@ for i in miss_cases:
     os.system(f"cp results/state_{i} {REPAIR_PATH}/docker/test/n{i}")
     os.system(f"cp results/actuation_{i} {REPAIR_PATH}/docker/test/output.n{i}")
 
-pass_cases = random.sample(passes, 2)
+pass_cases = random.sample(passes, NUM_PASS)
 
 print(pass_cases)
 

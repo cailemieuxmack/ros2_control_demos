@@ -23,7 +23,7 @@ program:
   tests:
     type: genprog
     workdir: /experiment
-    number-of-failing-tests: 1
+    number-of-failing-tests: 2
     number-of-passing-tests: 2
     time-limit: 0.5
 
