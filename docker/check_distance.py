@@ -148,7 +148,7 @@ if __name__ == "__main__":
     oracle_path = sys.argv[1]
 
     #print(trust_scores)
-    with open("data", "rb") as d, open(oracle_path, "rb") as o:
+    with open("_data", "rb") as d, open(oracle_path, "rb") as o:
         #a.write(b"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         d.seek(0)
         o.seek(0)
