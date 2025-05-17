@@ -45,7 +45,7 @@ pass_cases = random.sample(passes, NUM_PASS)
 
 print(pass_cases)
 
-for i in pass_cases:
-    os.system(f"cp results/state_{i} {REPAIR_PATH}/docker/test/p{i}")
-    os.system(f"cp results/actuation_{i} {REPAIR_PATH}/docker/test/output.p{i}")
+for i in range(len(pass_cases)):
+    os.system(f"cp results/state_{pass_cases[i]} {REPAIR_PATH}/docker/test/p{i}")
+    os.system(f"cp results/actuation_{pass_cases[i]} {REPAIR_PATH}/docker/test/output.p{i}")
 
