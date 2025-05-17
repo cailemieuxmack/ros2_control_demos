@@ -32,7 +32,7 @@ RUN sudo apt-get update \
  && sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # upgrade pip and install numpy
-RUN pip3 install --upgrade pip \
+RUN sudo python3 -m pip install --upgrade pip \
  && pip3 install numpy
 
 WORKDIR /experiment
