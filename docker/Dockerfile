@@ -26,8 +26,11 @@ RUN sudo apt-get update \
       bc \
       gdb \
       python3 \
+      python3-pip
  && sudo apt-get clean \
  && sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN pip3 install numpy
 
 WORKDIR /experiment
 COPY test_driver.cpp /experiment/lib/
