@@ -44,3 +44,4 @@ COPY test.sh /experiment
 COPY check_distance.py /experiment
 COPY test /experiment/test
 RUN sudo chown -R docker /experiment
+RUN sudo chown -R docker /tmp
