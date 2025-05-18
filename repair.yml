@@ -13,6 +13,7 @@ program:
   build-instructions:
     time-limit: 10
     steps:
+      - echo "***begining regular build process***" 
       - gcc -c -o controller.o controller.c
       - g++ -c -std=c++11 -o controller_main.o ../lib/test_driver.cpp
       - g++ -o controller controller.o controller_main.o
