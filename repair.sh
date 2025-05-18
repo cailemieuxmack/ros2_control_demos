@@ -17,7 +17,7 @@ python3 make_testcases.py $1 $max_idx
 make
 
 # FIXME: Update your path to Darjeeling
-cd /isis/home/cailm/Research/git/Darjeeling
+cd ../Darjeeling #/isis/home/cailm/Research/git/Darjeeling
 
 # IDK if this will work... 
-pipenv run $here_dir/repair_helper.sh $bad_num $here_dir
+poetry run $here_dir/repair_helper.sh $bad_num $here_dir
