@@ -44,5 +44,14 @@ COPY test.sh /experiment
 COPY check_distance.py /experiment
 COPY test /experiment/test
 RUN sudo chown -R docker /experiment
-RUN sudo chattr -i /tmp \
- && sudo chmod +w /tmp
+# RUN sudo chattr -i /tmp \
+#  && sudo chmod +w /tmp
+
+# Copy the entry point script into the container
+COPY entrypoint.sh /entrypoint.sh
+
+# Make the script executable
+RUN chmod +x /entrypoint.sh
+
+# Set the entry point to the script
+ENTRYPOINT ["/entrypoint.sh"]
