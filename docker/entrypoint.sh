@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Execute the command passed to the container
-"$@" &
+bash -c "$@" &
 
 # Wait for the files to be created and change their permissions
 while true; do
