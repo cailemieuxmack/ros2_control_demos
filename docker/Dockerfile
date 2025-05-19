@@ -46,11 +46,17 @@ COPY test /experiment/test
 RUN sudo chown -R docker /experiment
 
 # Try to make it so that you can rm from /tmp easilly
+RUN sudo apt-get acl
 RUN sudo chattr -i /tmp \
- && sudo chown docker /tmp \
- && sudo chmod 2777 /tmp 
+ && sudo chown docker /tmp 
+#  && sudo chmod 2777 /tmp 
 
-RUN sudo echo "umask 777" >> /home/docker/.bashrc
+RUN sudo setfacl -m u:docker:rwx /tmp \
+ && sudo setfacl -m u:1001:rwx /tmp \
+ && sudo setfacl -d -m u:docker:rwx /tmp \
+ && sudo setfacl -d -m u:1001:rwx /tmp
+
+# sudo setfacl -d -m u:docker:rwx /tmp
 #  && sudo chmod +t /tmp
 
 # # Copy the entry point script into the container
