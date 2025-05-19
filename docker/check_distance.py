@@ -135,6 +135,10 @@ def driver(data, oracle):
     except struct.error:
         print("could not read file 1")
 
+    
+    print(f"The controller voted: {A[0]}")
+    print(f"The accepted vote was: {A[1]}")
+
 
     epsilon = 0.5 # slightly larger than noise
     
