@@ -50,8 +50,8 @@ RUN sudo chown -R docker /experiment
 # Copy the entry point script into the container
 COPY entrypoint.sh /experiment/entrypoint.sh
 
-# Make the script executable
-RUN chmod +x /experiment/entrypoint.sh
+# # Make the script executable
+# RUN chmod +x /experiment/entrypoint.sh
 
 # Set the entry point to the script
 ENTRYPOINT ["/experiment/entrypoint.sh"]
