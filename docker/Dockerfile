@@ -48,7 +48,9 @@ RUN sudo chown -R docker /experiment
 # Try to make it so that you can rm from /tmp easilly
 RUN sudo chattr -i /tmp \
  && sudo chown docker /tmp \
- && sudo chmod 2777 /tmp \
+ && sudo chmod 2777 /tmp 
+
+RUN sudo echo "umask 777" >> /home/docker/.bashrc
 #  && sudo chmod +t /tmp
 
 # # Copy the entry point script into the container
