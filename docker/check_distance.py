@@ -136,8 +136,8 @@ def driver(data, oracle):
         print("could not read file 1")
 
     
-    print(f"The controller voted: {A[0]}")
-    print(f"The accepted vote was: {A[1]}")
+    print("The controller voted: " + str(A[0]))
+    print("The accepted vote was: " + str(A[1]))
 
 
     epsilon = 0.5 # slightly larger than noise
