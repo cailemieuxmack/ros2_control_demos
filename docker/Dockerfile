@@ -44,14 +44,17 @@ COPY test.sh /experiment
 COPY check_distance.py /experiment
 COPY test /experiment/test
 RUN sudo chown -R docker /experiment
-# RUN sudo chattr -i /tmp \
-#  && sudo chmod +w /tmp
 
-# Copy the entry point script into the container
-COPY entrypoint.sh /experiment/entrypoint.sh
+# Try to make it so that you can rm from /tmp easilly
+RUN sudo chattr -i /tmp \
+ && sudo chown docker /tmp \
+ && sudo chmod +w /tmp
 
-# # Make the script executable
-# RUN chmod +x /experiment/entrypoint.sh
+# # Copy the entry point script into the container
+# COPY entrypoint.sh /experiment/entrypoint.sh
 
-# Set the entry point to the script
-ENTRYPOINT ["/experiment/entrypoint.sh"]
+# # # Make the script executable
+# # RUN chmod +x /experiment/entrypoint.sh
+
+# # Set the entry point to the script
+# ENTRYPOINT ["/experiment/entrypoint.sh"]
