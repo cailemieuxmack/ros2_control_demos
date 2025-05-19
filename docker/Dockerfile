@@ -47,7 +47,7 @@ RUN sudo chown -R docker /experiment
 
 # Try to make it so that you can rm from /tmp easilly
 RUN sudo chattr -i /tmp \
- && sudo chown 1001 /tmp \
+ && sudo chown docker /tmp \
  && sudo chmod 777 /tmp \
  && sudo chmod +t /tmp
 
