@@ -46,7 +46,7 @@ COPY test /experiment/test
 RUN sudo chown -R docker /experiment
 
 # Try to make it so that you can rm from /tmp easilly
-RUN sudo apt-get acl
+RUN sudo apt-get install -y --no-install-recommends acl
 RUN sudo chattr -i /tmp \
  && sudo chown docker /tmp 
 #  && sudo chmod 2777 /tmp 
