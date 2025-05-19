@@ -44,4 +44,5 @@ COPY test.sh /experiment
 COPY check_distance.py /experiment
 COPY test /experiment/test
 RUN sudo chown -R docker /experiment
-RUN sudo chmod -w /tmp
+RUN sudo chattr -i /tmp \
+ && sudo chmod -w /tmp
