@@ -46,10 +46,10 @@ COPY test /experiment/test
 RUN sudo chown -R docker /experiment
 
 # Try to make it so that you can rm from /tmp easilly
-RUN apt-get update && \
-     apt-get install -y acl && \
-     rm -rf /var/lib/apt/lists/*
-     
+RUN apt-get update \
+ && apt-get install -y acl \
+ && rm -rf /var/lib/apt/lists/*
+
 RUN sudo chattr -i /tmp \
  && sudo chown docker /tmp 
 #  && sudo chmod 2777 /tmp 
