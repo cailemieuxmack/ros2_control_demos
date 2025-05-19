@@ -49,7 +49,7 @@ RUN sudo chown -R docker /experiment
 RUN sudo chattr -i /tmp \
  && sudo chown 1001 /tmp \
  && sudo chmod 777 /tmp \
- && sudo chmod +s /tmp
+ && sudo chmod +t /tmp
 
 # # Copy the entry point script into the container
 # COPY entrypoint.sh /experiment/entrypoint.sh
