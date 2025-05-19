@@ -30,7 +30,9 @@ void interpolate_point(
         delta * point_2.velocities[i] + (1.0 - delta) * point_1.velocities[i];
 
         // DEBUG This is the bug
+        
         point_interp->velocities[i] = -1 * (point_interp->velocities[i] + 10);
+
     }
   }
   
