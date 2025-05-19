@@ -47,7 +47,7 @@ RUN sudo chown -R docker /experiment
 
 # Try to make it so that you can rm from /tmp easilly
 RUN sudo apt-get update \
- && sudo apt-get install -y acl \
+ && sudo apt-get install -y acl
 
 RUN sudo chattr -i /tmp \
  && sudo chown docker /tmp 
