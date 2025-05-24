@@ -74,10 +74,10 @@ def cosine_distance(vec1, vec2):
 
 
 
-class RepeatTimer(Timer):
-    def run(self):
-        while not self.finished.wait(self.interval):
-            self.function(*self.args, **self.kwargs)
+# class RepeatTimer(Timer):
+#     def run(self):
+#         while not self.finished.wait(self.interval):
+#             self.function(*self.args, **self.kwargs)
             
 def modify_voter_positions(A):
     # Modify each position in A by adding a random value between -1 and 1
