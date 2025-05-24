@@ -79,9 +79,9 @@ def cosine_distance(vec1, vec2):
 #         while not self.finished.wait(self.interval):
 #             self.function(*self.args, **self.kwargs)
             
-def modify_voter_positions(A):
-    # Modify each position in A by adding a random value between -1 and 1
-    return [a + random.uniform(-1, 1) for a in A]
+# def modify_voter_positions(A):
+#     # Modify each position in A by adding a random value between -1 and 1
+#     return [a + random.uniform(-1, 1) for a in A]
 
 def update_trust_scores(A, accepted_votes):
     # Placeholder for logic to update trust scores
