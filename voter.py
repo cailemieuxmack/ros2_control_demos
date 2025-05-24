@@ -97,7 +97,7 @@ def update_trust_scores(A, accepted_votes):
         else:
             # take off at most 0.1, scaled by how wrong it is
             trust_scores[idx] = max(trust_scores[idx] - 0.08, 0.0) #= max(trust_scores[idx] - deviation / 100, 0)
-            print(f"crontroller {idx} voted wrong")
+            print(f"controller {idx} voted wrong")
             write_missed(idx)
 
 
