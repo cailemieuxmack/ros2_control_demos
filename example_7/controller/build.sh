@@ -10,7 +10,7 @@ g++ -o $dir/tmp0 $dir/c0/controller.o $dir/c0/controller_main.o
 
 gcc -c -o $dir/c1/controller.o $dir/c1/controller.c
 g++ -c -o $dir/c1/controller_main.o $dir/c1/controller_main.cpp
-g++ -o $dir/tmp1 $dir/c0/controller.o $dir/c1/controller_main.o
+g++ -o $dir/tmp1 $dir/c1/controller.o $dir/c1/controller_main.o
 
 gcc -c -o $dir/c2/controller.o $dir/c2/controller.c
 g++ -c -o $dir/c2/controller_main.o $dir/c2/controller_main.cpp
