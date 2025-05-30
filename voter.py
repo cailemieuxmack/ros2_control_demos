@@ -74,14 +74,14 @@ def cosine_distance(vec1, vec2):
 
 
 
-# class RepeatTimer(Timer):
-#     def run(self):
-#         while not self.finished.wait(self.interval):
-#             self.function(*self.args, **self.kwargs)
+class RepeatTimer(Timer):
+    def run(self):
+        while not self.finished.wait(self.interval):
+            self.function(*self.args, **self.kwargs)
             
-# def modify_voter_positions(A):
-#     # Modify each position in A by adding a random value between -1 and 1
-#     return [a + random.uniform(-1, 1) for a in A]
+def modify_voter_positions(A):
+    # Modify each position in A by adding a random value between -1 and 1
+    return [a + random.uniform(-1, 1) for a in A]
 
 def update_trust_scores(A, accepted_votes):
     # Placeholder for logic to update trust scores
@@ -97,7 +97,7 @@ def update_trust_scores(A, accepted_votes):
         else:
             # take off at most 0.1, scaled by how wrong it is
             trust_scores[idx] = max(trust_scores[idx] - 0.08, 0.0) #= max(trust_scores[idx] - deviation / 100, 0)
-            print(f"controller {idx} voted wrong")
+            print(f"crontroller {idx} voted wrong")
             write_missed(idx)
 
 
@@ -169,9 +169,9 @@ def vote(A, epsilon):
                 # FIXME this is just for testing and debugging
                 # DEBUG should actually handle missed votes better than this
                 print(f"controller {idx} missed the vote")
-                if(myIdx > 10):
-                    trust_scores[idx] -= 0.1
-                    write_missed(idx)
+                # if(myIdx > 10):
+                #     trust_scores[idx] -= 0.1
+                #     write_missed(idx)
                 continue
             # A flag to check if x has been added to a subdivision
             added_to_subdivision = False
