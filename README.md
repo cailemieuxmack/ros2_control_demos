@@ -1,27 +1,32 @@
 # ROS2 Controller Repair
 
 ## Description
-```
+
 This dirrecory contains an example implementation of N-version Automated Program Repair.
 It is implemented on a robot arm control system written using ROS2. This robotic arm simulation comes from https://github.com/ros-controls/ros2_control_demos/tree/master/example_7.
-The vulns/ dirrectory contains example vulnerable controller code and input generators to exploit them. 
-So far, we have successfully repaired: vuln_segfault, vuln_fmtstr_crash, vuln_dos, and vuln_infinite_loop
-```
 
-## Dependencies
+The `vulns/` dirrectory contains example vulnerable controller code and input generators to exploit them. 
+So far, we have successfully repaired: `vuln_segfault`,`vuln_fmtstr_crash`, `vuln_dos`, `bug_floating_point`, and `vuln_infinite_loop`.
 
-```
-In order to run a repair, you must install Darjeeling from https://github.com/squaresLab/Darjeeling/
+The detection mechanism leverages a mallicious controller voting against the N-version system concesus. The failing test cases for the repair are drawn from cases where the failing controller votted incorrectly. A successful repair will generate a patch file `patches/0.diff` which can be applied to the failing controller to make it pass all generated tests (i.e. the patched controller ***would*** have voted correctly before).
+
+Thus, we can react to threats and dynamically generate test cases that expose them in the targeted controller. Then, we can use these generated tests to automatically craft a repair that addresses the threat.
+
+
+## Darjeeling Dependency
+
+In order to run a repair, you must install Darjeeling from https://github.com/squaresLab/Darjeeling/.
 This project is designed to use commit 811337bc15186f0eaf49a4d15fb09441add2ff38.
 Follow the dirrections given in the repository to install the dependencies and set up the pip environment. Then, update the path to Darjeeling
 in the repair.sh file in this directory.
-```
+
 
 ## Setup
 
 Must be on Ubuntu 22.04 or higher for this to work. Has only been tested on Ubuntu 24.04.
 ```
-./install_ros2_jazzy.sh       # or install ros2 jazzy manually using the dirrections at https://docs.ros.org/en/jazzy/Installation.html
+./install_ros2_jazzy.sh     # or install ros2 jazzy manually using the dirrections at
+                            #       https://docs.ros.org/en/jazzy/Installation.html
 ./copy_vuln.sh safe
 ./build.sh
 ```
@@ -29,7 +34,7 @@ Must be on Ubuntu 22.04 or higher for this to work. Has only been tested on Ubun
 ## Running an example
 
 ```
-[copy a vulnerability into controller 0 and build everything]\
+[copy a vulnerability into controller 0 and rebuild everything]
 rm -rf log/ build/ install/
 ./copy_vuln.sh [name of vuln]
 ./build.sh
@@ -50,9 +55,9 @@ python3 voter.py
 [once a vulnerability is detected]
 ./repair.sh <controller num> <idx>
 ```
-Here, the `controller num` means which controller to repair (./copy_vuln.sh makes controller 0 vulnerable) and `idx` refers to the highest index reached by the controllers. This will be reported in the output of both voter.py and ./start_controller.sh and can be clearly seen by running `ls results` and choosing the largest index present.
+Here, the `controller num` means which controller to repair (./copy_vuln.sh makes controller 0 vulnerable) and `idx` refers to the highest index reached by the controllers. This will be reported as "My Index" in the output of voter.py and "Idx recieved" in the output of ./start_controller.sh. It can also be clearly seen by running `ls results` and choosing the largest index present.
 
-Repairs can also be triggered automatically by commenting out line 134 in voter.py.
+Repairs can also be triggered automatically by commenting out line 134 in voter.py. This allows the remaining N-1 controllers to maintain opperation durring the repair.
 ```
 
 [afterwards]
